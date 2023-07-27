@@ -9,6 +9,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -44,7 +45,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
     ReactiveFormsModule,
     MatInputModule,
     FontAwesomeModule,
-    NgbModule
+    NgbModule,
+    MatButtonModule
   ],
   exports: [
     FontAwesomeModule,

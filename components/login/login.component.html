@@ -27,7 +27,9 @@
         </mat-error>
   
         <button type="button" class="pwd" mat-icon-button matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Cacher le mot de passe'" [attr.aria-pressed]="!showPassword">
-          <mat-icon>{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <!-- <mat-icon>{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon> -->
+          <fa-icon [icon]="['fas', 'eye-slash']" *ngIf="showPassword"></fa-icon>
+          <fa-icon [icon]="['fas', 'eye']" *ngIf="!showPassword"></fa-icon>
         </button>
       </mat-form-field>
     <!-- ACTION BUTTON -->
