@@ -21,13 +21,15 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     LogoutComponent,
     NavHomeComponent,
-    InputErrorPipe
+    InputErrorPipe,
+    LoadingSpinnerComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
     CommonModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    LoadingSpinnerComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
