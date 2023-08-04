@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -47,12 +47,16 @@ export class AuthService {
   signinUser(identifiant: string, password: string): Observable<any> {
     this.isLoading = true;
 
+    const headers= new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
     const options = {
       login: identifiant,
       password: password
     };
 
-    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options).pipe(
+    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, { 'headers': headers }).pipe(
       map(
         (el) => {const user = new User(
           el.user.id_role,
