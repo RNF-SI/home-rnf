@@ -53,7 +53,8 @@ export class AuthService {
 
     const options = {
       login: identifiant,
-      password: password
+      password: password,
+      id_application: AppConfig.ID_APPLICATION_GEONATURE
     };
 
     return this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, { 'headers': headers }).pipe(
