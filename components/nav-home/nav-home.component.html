@@ -23,7 +23,9 @@
     {{user!.prenom_role | titlecase}} {{user!.nom_role | titlecase}} <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>
   <mat-menu #menuSettings="matMenu">
-    <button mat-menu-item [routerLink]="'logout'"><fa-icon [icon]="['fas', 'right-from-bracket']"></fa-icon> Déconnexion</button>
+    <div *ngFor="let i of menucompte" >
+      <button mat-menu-item [routerLink]="[i.lien]"><fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{i.texte}}</button>
+    </div>
   </mat-menu>
 </mat-toolbar>
 

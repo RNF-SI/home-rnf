@@ -18,6 +18,7 @@ export class NavHomeComponent implements OnInit {
   subtitle = AppConfig.appSubTitle;
   credit = AppConfig.creditHeaderImage;
   menu = AppConfig.menu;
+  menucompte = AppConfig.menucompte
 
   ngOnInit(): void {    
   }
