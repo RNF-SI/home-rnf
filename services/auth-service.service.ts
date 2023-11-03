@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { AppConfig } from 'src/conf/app.config';
+import { environment } from 'src/environments/environment';
 
 import { User } from '../models/user.model';
 
@@ -63,11 +64,11 @@ export class AuthService {
       withCredentials: true
     };
 
-    this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, httpOptions).subscribe(response => {
+    this._http.post<any>(`${environment.apiUrl}/auth/login`, options, httpOptions).subscribe(response => {
       const token = response.token;
     });
 
-    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, httpOptions).pipe(
+    return this._http.post<any>(`${environment.apiUrl}/auth/login`, options, httpOptions).pipe(
       map(
         (response) => {
           this.setCurrentUser(response.user, response.token, response.expires)
@@ -78,7 +79,7 @@ export class AuthService {
   }
 
   loginOrPwdRecovery(data : any): Observable<any> {
-    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/login/recovery`, data);
+    return this._http.post<any>(`${environment.apiUrl}/login/recovery`, data);
   }
 
   logout() {
