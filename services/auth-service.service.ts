@@ -19,8 +19,10 @@ export class AuthService {
     private _http: HttpClient
   ) { }
 
-  setCurrentUser(user : User) {
+  setCurrentUser(user : any, token : any, expireDate : any) {
     localStorage.setItem('current_user', JSON.stringify(user));    
+    localStorage.setItem("tk_id_token", token)
+    localStorage.setItem('expires_at', expireDate);
   }
 
 
@@ -57,20 +59,26 @@ export class AuthService {
       id_application: AppConfig.ID_APPLICATION_GEONATURE
     };
 
-    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, { 'headers': headers }).pipe(
+    const httpOptions = {
+      withCredentials: true
+    };
+
+    this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, httpOptions).subscribe(response => {
+      const token = response.token;
+    });
+
+    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/auth/login`, options, httpOptions).pipe(
       map(
-        (el) => {const user = new User(
-          el.user.id_role,
-          el.user.id_organisme,
-          el.user.prenom_role,
-          el.user.nom_role,
-          el.user.identifiant
-        );        
-        this.setCurrentUser(user);
-        console.log(localStorage.getItem('current_user'));}
-        
+        (response) => {
+          this.setCurrentUser(response.user, response.token, response.expires)
+      }
+
         )
     )
+  }
+
+  loginOrPwdRecovery(data : any): Observable<any> {
+    return this._http.post<any>(`${AppConfig.API_ENDPOINT}/login/recovery`, data);
   }
 
   logout() {
@@ -80,6 +88,6 @@ export class AuthService {
   private cleanLocalStorage() {
     // Remove only local storage items need to clear when user logout
     localStorage.removeItem('current_user');
-    localStorage.removeItem('modules');
+    // localStorage.removeItem('modules');
   }
 }
