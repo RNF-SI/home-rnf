@@ -89,7 +89,9 @@ export class LoginComponent  {
   }
 
   resetPwdRequest() {
-    this.disableSubmit = true;
+    // this.disableSubmit = true;
+    this.formNoPwd.value['email'] = this.formNoPwd.value['email'].toLowerCase();
+    
     this._authService.loginOrPwdRecovery(this.formNoPwd.value)
     .subscribe(()=> {
       this._toasterService.info('Vous recevrez un mail avec un lien pour réinitialiser votre mot de passe.','Réinitialisation du mot de passe demandée !')
@@ -100,7 +102,6 @@ export class LoginComponent  {
       this.disableSubmit = false;
     })
     
-
   }
 
   /**
