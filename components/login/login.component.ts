@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RedirectService } from '../../services/redirect.service'; 
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 export interface LoginData {
   code?: string;
@@ -26,8 +27,8 @@ export class LoginComponent  {
   private identifiant: UntypedFormControl;
   private password: UntypedFormControl;
 
-  formNoPwd : UntypedFormGroup;
-  private email: UntypedFormControl;
+  // formNoPwd : UntypedFormGroup;
+  // private email: UntypedFormControl;
 
   public errorCode: string|null = null;
   public APP_NAME = AppConfig.appName;
@@ -43,7 +44,8 @@ export class LoginComponent  {
     public _authService: AuthService,
     private ref: MatDialogRef<LoginComponent>,
     private redirect: RedirectService,
-    private _toasterService: ToastrService
+    private _toasterService: ToastrService,
+    private router: Router
   ) {
 
     this.identifiant = new UntypedFormControl(null, Validators.required);
@@ -51,11 +53,11 @@ export class LoginComponent  {
 
     this.form = new UntypedFormGroup({});
 
-    this.email = new UntypedFormControl(null, [Validators.required, Validators.email]);
+    // this.email = new UntypedFormControl(null, [Validators.required, Validators.email]);
 
-    this.formNoPwd = new UntypedFormGroup({});
+    // this.formNoPwd = new UntypedFormGroup({});
 
-    this.formNoPwd.addControl('email', this.email)
+    // this.formNoPwd.addControl('email', this.email)
 
     this.showPassword = this.progress = false;
     this.errorCode = null;
@@ -88,21 +90,26 @@ export class LoginComponent  {
 
   }
 
-  resetPwdRequest() {
-    // this.disableSubmit = true;
-    this.formNoPwd.value['email'] = this.formNoPwd.value['email'].toLowerCase();
-    
-    this._authService.loginOrPwdRecovery(this.formNoPwd.value)
-    .subscribe(()=> {
-      this._toasterService.info('Vous recevrez un mail avec un lien pour réinitialiser votre mot de passe.','Réinitialisation du mot de passe demandée !')
-    }, error => {
-      this._toasterService.error(error.error.msg, '')
-    })
-    .add(() => {
-      this.disableSubmit = false;
-    })
-    
+  clikonforgot() {
+    this.router.navigate(['/mot-de-passe-oublie']);
+    this.ref.close();
   }
+
+  // resetPwdRequest() {
+  //   // this.disableSubmit = true;
+  //   this.formNoPwd.value['email'] = this.formNoPwd.value['email'].toLowerCase();
+    
+  //   this._authService.loginOrPwdRecovery(this.formNoPwd.value)
+  //   .subscribe(()=> {
+  //     this._toasterService.info('Vous recevrez un mail avec un lien pour réinitialiser votre mot de passe.','Réinitialisation du mot de passe demandée !')
+  //   }, error => {
+  //     this._toasterService.error(error.error.msg, '')
+  //   })
+  //   .add(() => {
+  //     this.disableSubmit = false;
+  //   })
+    
+  // }
 
   /**
    * Shows the error message

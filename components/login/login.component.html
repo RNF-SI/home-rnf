@@ -7,7 +7,7 @@
   <!-- ERROR MESSAGE -->
   <mat-error *ngIf="errorCode" class="error-message">{{ errorCode | inputError }}</mat-error>
 
-  <ng-container *ngIf="!login_or_pass_recovery; else logPwdRecoBlock">
+  <ng-container>
     <form [formGroup]="form" fxLayout="column" fxLayoutAlign="space-around stretch" fxLayoutGap="10px"
       (ngSubmit)="signIn()">
 
@@ -42,7 +42,7 @@
       </button>
       <br>
       <br>
-      <div class="forgot" (click)="login_or_pass_recovery = true">
+      <div class="forgot" (click)="clikonforgot()">
         Mot de passe oublié
       </div>
       <br>
@@ -52,7 +52,7 @@
       <mat-progress-bar *ngIf="progress" mode="indeterminate" color="accent"></mat-progress-bar>
     </form>
   </ng-container>
-  <ng-template #logPwdRecoBlock>
+  <!-- <ng-template #logPwdRecoBlock>
     <ng-container *ngIf="login_or_pass_recovery">
       <div>
         <small>Veuillez renseigner votre adresse email utilisée lors de votre
@@ -80,7 +80,7 @@
       </button>
       </form>
     </ng-container>
-  </ng-template>
+  </ng-template> -->
 </div>
 
 <!-- create form for login -->

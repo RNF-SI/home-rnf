@@ -22,6 +22,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     LogoutComponent,
     NavHomeComponent,
     InputErrorPipe,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,
