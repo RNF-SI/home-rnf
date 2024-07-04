@@ -5,7 +5,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { AppConfig } from 'src/conf/app.config';
 import { environment } from 'src/environments/environment';
 
-import { User } from '../models/user.model';
+import { User, userRnsObj } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,11 @@ export class AuthService {
     private _http: HttpClient
   ) { }
 
-  setCurrentUser(user : any, token : any, expireDate : any) {
+  setCurrentUser(user : any, token : any, expireDate : any, rns:any) {
     localStorage.setItem('current_user', JSON.stringify(user));    
     localStorage.setItem("tk_id_token", token)
     localStorage.setItem('expires_at', expireDate);
+    localStorage.setItem('rnsUser', JSON.stringify(rns))    
   }
 
 
@@ -36,6 +37,17 @@ export class AuthService {
       user = null
     }
     return user;
+  }
+
+  getRnsUser() {
+    let currentRnsUser = localStorage.getItem('rnsUser');
+    let rnsUser;
+    if(currentRnsUser){      
+      rnsUser = JSON.parse(currentRnsUser);
+    } else {
+      rnsUser = null
+    }
+    return rnsUser;
   }
 
   public get authenticated(): boolean {
@@ -71,7 +83,13 @@ export class AuthService {
     return this._http.post<any>(`${environment.apiUrl}/auth/login`, options, httpOptions).pipe(
       map(
         (response) => {
-          this.setCurrentUser(response.user, response.token, response.expires)
+          console.log(response.user.id_role);
+          ;
+          
+          this.getRnsByUser(response.user.id_role).subscribe(res => {            
+            this.setCurrentUser(response.user, response.token, response.expires, res.items);
+          })
+
       }
 
         )
@@ -90,5 +108,9 @@ export class AuthService {
     // Remove only local storage items need to clear when user logout
     localStorage.removeItem('current_user');
     // localStorage.removeItem('modules');
+  }
+
+  getRnsByUser(id_role: number): Observable<userRnsObj> {
+    return this._http.get<userRnsObj>(`${environment.apiUrl}/exports/api/3?token=${environment.token}&role_id=${id_role}`);
   }
 }

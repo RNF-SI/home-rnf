@@ -13,3 +13,19 @@ export class User {
         this.identifiant = identifiant;
     }
 }
+
+export interface userRnsObj {
+    items: userRns[]
+    limit: number
+    page:number
+    total:number
+    total_filtered:number
+  }
+
+export interface userRns {
+    role_id : number
+    rn_id: number
+    rn_nom: string
+    area_x : string
+    area_y: string
+}
