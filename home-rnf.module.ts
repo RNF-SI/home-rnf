@@ -24,6 +24,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     InputErrorPipe,
     LoadingSpinnerComponent,
     ForgotPasswordComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    AccessDeniedComponent
   ],
   imports: [
     CommonModule,
