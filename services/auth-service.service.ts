@@ -76,11 +76,11 @@ export class AuthService {
       withCredentials: true
     };
 
-    this._http.post<any>(`${environment.apiUrl}/auth/login`, options, httpOptions).subscribe(response => {
+    this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).subscribe(response => {
       const token = response.token;
     });
 
-    return this._http.post<any>(`${environment.apiUrl}/auth/login`, options, httpOptions).pipe(
+    return this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).pipe(
       map(
         (response) => {
           console.log(response.user.id_role);
@@ -97,7 +97,7 @@ export class AuthService {
   }
 
   loginOrPwdRecovery(data : any): Observable<any> {
-    return this._http.post<any>(`${environment.apiUrl}/login/recovery`, data);
+    return this._http.post<any>(`${environment.apiGeoNature}/login/recovery`, data);
   }
 
   logout() {
@@ -111,6 +111,6 @@ export class AuthService {
   }
 
   getRnsByUser(id_role: number): Observable<userRnsObj> {
-    return this._http.get<userRnsObj>(`${environment.apiUrl}/exports/api/3?token=${environment.token}&role_id=${id_role}`);
+    return this._http.get<userRnsObj>(`${environment.apiGeoNature}/exports/api/3?token=${environment.token}&role_id=${id_role}`);
   }
 }
