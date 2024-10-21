@@ -75,5 +75,7 @@ const routes: Routes = [
 
 13. Modifier le titre de l'application dans index.html
 
-14. lancer l'app
+14. Il faut également ajouter un fichier custom-theme.scss dans src/styles pour définir les palettes de couleur material. Et appeler ensuite ce fichier dans src/styles.scss avec @import 'styles/custom-theme.scss';
+
+15. lancer l'app
 	npm start	
