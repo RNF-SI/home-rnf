@@ -1,5 +1,5 @@
-<div class="panel-heading">
-  <div class="title">
+<div [ngClass]="{'panel-heading-home': isHomePage, 'panel-heading': !isHomePage}">
+  <div [ngClass]="{'title-home': isHomePage, 'title': !isHomePage}">
     {{ title | uppercase }}
   </div>
   <div>
@@ -23,8 +23,10 @@
     {{user!.prenom_role | titlecase}} {{user!.nom_role | titlecase}} <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>
   <mat-menu #menuSettings="matMenu">
-    <div *ngFor="let i of menucompte" >
-      <button mat-menu-item [routerLink]="[i.lien]"><fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{i.texte}}</button>
+    <div *ngFor="let i of menucompte">
+      <button mat-menu-item [routerLink]="[i.lien]">
+        <fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{i.texte}}
+      </button>
     </div>
   </mat-menu>
 </mat-toolbar>
@@ -67,7 +69,8 @@
             <div><a href="https://www.facebook.com/rn.de.france" class="me-4 link-secondary" target="_blank">
                 <fa-icon [icon]="['fab', 'facebook']" size="3x" class="white-icon"></fa-icon>
               </a></div>
-            <div><a href="https://www.instagram.com/reserves_naturelles_de_france/" class="me-4 link-secondary" target="_blank">
+            <div><a href="https://www.instagram.com/reserves_naturelles_de_france/" class="me-4 link-secondary"
+                target="_blank">
                 <fa-icon [icon]="['fab', 'instagram']" size="3x" class="white-icon"></fa-icon>
               </a></div>
             <div><a href="https://www.linkedin.com/company/50041043" class="me-4 link-secondary" target="_blank">

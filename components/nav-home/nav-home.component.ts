@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth-service.service';
-import { AppConfig } from 'src/conf/app.config';
+import { Router } from '@angular/router';
 import { User } from 'src/app/home-rnf/models/user.model';
+import { AppConfig } from 'src/conf/app.config';
+import { AuthService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'app-nav-home',
@@ -11,7 +12,8 @@ import { User } from 'src/app/home-rnf/models/user.model';
 export class NavHomeComponent implements OnInit {
 
   constructor(
-    public _authService: AuthService
+    public _authService: AuthService,
+    private router: Router
   ) { }
 
   title = AppConfig.appTitle;
@@ -19,15 +21,21 @@ export class NavHomeComponent implements OnInit {
   credit = AppConfig.creditHeaderImage;
   menu = AppConfig.menu;
   menucompte = AppConfig.menucompte
+  isHomePage: boolean = false;
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      this.isHomePage = this.router.url === '/';
+      console.log('isHomePage :', this.isHomePage);
+
+    });
   }
 
   public get signedIn(): boolean {
     return this._authService.authenticated || false;
   }
 
-  public get user(): null|User {
+  public get user(): null | User {
     return this._authService.getCurrentUser();
   }
 

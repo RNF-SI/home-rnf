@@ -4,16 +4,17 @@
   flex: 1 1 auto;
 }
 
-//   .panel-heading {
-//     background: url(/assets/images/banierre.jpg) no-repeat; // image de 2560px * 800px
-//     background-size: cover;
-//     min-width: 100%;
-//     min-height: 600px;
-//     display: inline-block;
-//     color: white;
-// }
-
 .panel-heading {
+  width: 100%;
+  height: 150px;
+  background: url(/assets/images/embleme.png) no-repeat, url(/assets/images/banierre.jpg) no-repeat; // image de 2560px * 800px
+  background-size: 100px, cover;
+  display: inline-block;
+  color: white;
+  position: relative;
+}
+
+.panel-heading-home {
   width: 100%;
   height: 600px;
   background: url(/assets/images/embleme.png) no-repeat, url(/assets/images/banierre.jpg) no-repeat; // image de 2560px * 800px
@@ -29,6 +30,16 @@
 }
 
 .title {
+  padding-top: 30px;
+  padding-left: 150px;
+  text-align: left;
+  font-family: "ArimaMaduraiRegular";
+  font-size: 55px;
+  line-height: 1;
+  width: 1000px;
+}
+
+.title-home {
   padding-top: 280px;
   padding-left: 150px;
   text-align: left;
