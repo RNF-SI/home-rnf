@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AppConfig } from 'src/conf/app.config';
 import { environment } from 'src/environments/environment';
 
-import { User, userRnsObj } from '../models/user.model';
+import { userRnsObj } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +20,18 @@ export class AuthService {
     private _http: HttpClient
   ) { }
 
-  setCurrentUser(user : any, token : any, expireDate : any, rns:any) {
-    localStorage.setItem('current_user', JSON.stringify(user));    
+  setCurrentUser(user: any, token: any, expireDate: any, rns: any) {
+    localStorage.setItem('current_user', JSON.stringify(user));
     localStorage.setItem("tk_id_token", token)
     localStorage.setItem('expires_at', expireDate);
-    localStorage.setItem('rnsUser', JSON.stringify(rns))    
+    localStorage.setItem('rnsUser', JSON.stringify(rns))
   }
 
 
   getCurrentUser() {
     let currentUser = localStorage.getItem('current_user');
     let user;
-    if(currentUser){      
+    if (currentUser) {
       user = JSON.parse(currentUser);
     } else {
       user = null
@@ -42,7 +42,7 @@ export class AuthService {
   getRnsUser() {
     let currentRnsUser = localStorage.getItem('rnsUser');
     let rnsUser;
-    if(currentRnsUser){      
+    if (currentRnsUser) {
       rnsUser = JSON.parse(currentRnsUser);
     } else {
       rnsUser = null
@@ -51,8 +51,8 @@ export class AuthService {
   }
 
   public get authenticated(): boolean {
-    
-    if(this.getCurrentUser()!=null){
+
+    if (this.getCurrentUser() != null) {
       return true
     } else {
       return false;
@@ -62,7 +62,7 @@ export class AuthService {
   signinUser(identifiant: string, password: string): Observable<any> {
     this.isLoading = true;
 
-    const headers= new HttpHeaders()
+    const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
 
@@ -83,20 +83,17 @@ export class AuthService {
     return this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).pipe(
       map(
         (response) => {
-          console.log(response.user.id_role);
-          ;
-          
-          this.getRnsByUser(response.user.id_role).subscribe(res => {            
+          this.getRnsByUser(response.user.id_role).subscribe(res => {
             this.setCurrentUser(response.user, response.token, response.expires, res.items);
           })
 
-      }
+        }
 
-        )
+      )
     )
   }
 
-  loginOrPwdRecovery(data : any): Observable<any> {
+  loginOrPwdRecovery(data: any): Observable<any> {
     return this._http.post<any>(`${environment.apiGeoNature}/login/recovery`, data);
   }
 

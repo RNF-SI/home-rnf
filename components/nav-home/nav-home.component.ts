@@ -26,8 +26,6 @@ export class NavHomeComponent implements OnInit {
   ngOnInit(): void {
     this.router.events.subscribe(() => {
       this.isHomePage = this.router.url === '/';
-      console.log('isHomePage :', this.isHomePage);
-
     });
   }
 
