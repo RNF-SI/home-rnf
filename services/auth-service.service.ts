@@ -110,4 +110,13 @@ export class AuthService {
   getRnsByUser(id_role: number): Observable<userRnsObj> {
     return this._http.get<userRnsObj>(`${environment.apiGeoNature}/exports/api/3?token=${environment.token}&role_id=${id_role}`);
   }
+
+  hasAccessToRn(rnId: string | null): boolean {
+    if (!this.authenticated) {
+      return false;
+    }
+
+    const userRns = this.getRnsUser();
+    return userRns.some((rn: { rn_id: string | null }) => rn.rn_id === rnId);
+  }
 }
