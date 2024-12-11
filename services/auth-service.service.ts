@@ -136,10 +136,6 @@ export class AuthService {
         // Vérifier les liens avec RN
         const userRns = this.getRnsUser();
         const hasRnAccess = userRns.some((rn: { rn_id: string | null }) => rn.rn_id === rnId);
-        console.log(userRns);
-
-        console.log(hasRnAccess);
-
 
         // Retourner true ou false selon l'accès RN
         return of(hasRnAccess);
