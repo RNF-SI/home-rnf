@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, switchMap } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AppConfig } from 'src/conf/app.config';
 import { environment } from 'src/environments/environment';
 
-import { userRnsObj } from '../models/user.model';
+import { userAppRulesObj, userRnsObj } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -111,12 +111,43 @@ export class AuthService {
     return this._http.get<userRnsObj>(`${environment.apiGeoNature}/exports/api/3?token=${environment.token}&role_id=${id_role}`);
   }
 
-  hasAccessToRn(rnId: string | null): boolean {
+  getRulesByUserAndApplication(id_role: number, id_application: number): Observable<userAppRulesObj> {
+    return this._http.get<userAppRulesObj>(`${environment.apiGeoNature}/exports/api/4?token=${environment.token}&id_role=${id_role}&id_application=${id_application}`);
+  }
+
+  hasAccessToRn(rnId: string | null): Observable<boolean> {
     if (!this.authenticated) {
-      return false;
+      return of(false); // Retourner false immédiatement si l'utilisateur n'est pas authentifié
     }
 
-    const userRns = this.getRnsUser();
-    return userRns.some((rn: { rn_id: string | null }) => rn.rn_id === rnId);
+    const currentUser = this.getCurrentUser(); // Méthode pour obtenir l'utilisateur actuel
+    if (!currentUser) {
+      return of(false); // Retourner false si aucune information utilisateur n'est disponible
+    }
+
+    // Vérifier les règles d'accès via getRulesByUserAndApplication
+    return this.getRulesByUserAndApplication(currentUser.id_role, environment.id_application).pipe(
+      switchMap(result => {
+        // Si l'utilisateur a le droit maximal, autoriser immédiatement
+        if (result.items[0]?.id_droit_max === 6) {
+          return of(true);
+        }
+
+        // Vérifier les liens avec RN
+        const userRns = this.getRnsUser();
+        const hasRnAccess = userRns.some((rn: { rn_id: string | null }) => rn.rn_id === rnId);
+        console.log(userRns);
+
+        console.log(hasRnAccess);
+
+
+        // Retourner true ou false selon l'accès RN
+        return of(hasRnAccess);
+      }),
+      catchError(() => {
+        // En cas d'erreur (API ou autre), refuser l'accès
+        return of(false);
+      })
+    );
   }
 }
