@@ -37,4 +37,12 @@ export class NavHomeComponent implements OnInit {
     return this._authService.getCurrentUser();
   }
 
+  onSearch(searchTerm: string): void {
+    if (searchTerm && searchTerm.trim()) {
+      console.log("Recherche lancée pour :", searchTerm);
+      // Exemple : rediriger vers une page de résultats en passant le terme recherché dans les queryParams
+      this.router.navigate(['/search'], { queryParams: { q: searchTerm } });
+    }
+  }
+
 }
