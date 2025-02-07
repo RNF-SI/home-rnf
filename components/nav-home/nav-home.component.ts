@@ -33,6 +33,7 @@ export class NavHomeComponent implements OnInit {
   searchItems: SearchItem[] = []; // Items récupérés depuis le backend
   filteredSearchItems!: Observable<SearchItem[]>;
   searchInput = AppConfig.SEARCH_INPUT;
+  placeholder = AppConfig.SEARCH_PLACEHOLDER;
 
   ngOnInit(): void {
     this.router.events.subscribe(() => {

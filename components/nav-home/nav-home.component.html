@@ -21,7 +21,7 @@
   <div class="search-bar" *ngIf="searchInput">
     <mat-form-field>
       <mat-label>Recherche</mat-label>
-      <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="Rechercher...">
+      <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" [placeholder]=placeholder>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
         (optionSelected)="onSearchItemSelected($event)">
         <mat-option *ngFor="let item of filteredSearchItems | async" [value]="item">
