@@ -10,26 +10,47 @@
   </div>
 </div>
 <mat-toolbar>
+  <!-- Liens du menu -->
   <div *ngFor="let e of menu">
-    <a [routerLink]=e.lien>
-      <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom | uppercase}}
+    <a [routerLink]="e.lien">
+      <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom | uppercase }}
     </a>
   </div>
+
+  <!-- Barre de recherche -->
+  <div class="search-bar" *ngIf="searchInput">
+    <mat-form-field>
+      <mat-label>Recherche</mat-label>
+      <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" [placeholder]=placeholder>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+        (optionSelected)="onSearchItemSelected($event)">
+        <mat-option *ngFor="let item of filteredSearchItems | async" [value]="item">
+          {{ item.nom }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
   <span class="example-spacer"></span>
+
+  <!-- Liens connexion / utilisateur -->
   <a [routerLink]="'login'" *ngIf="!signedIn">
     <fa-icon [icon]="['fas', 'right-to-bracket']" size="2x"></fa-icon>
   </a>
   <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn">
-    {{user!.prenom_role | titlecase}} {{user!.nom_role | titlecase}} <fa-icon [icon]="['fas', 'user']"></fa-icon>
+    {{ user!.prenom_role | titlecase }} {{ user!.nom_role | titlecase }}
+    <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>
   <mat-menu #menuSettings="matMenu">
     <div *ngFor="let i of menucompte">
       <button mat-menu-item [routerLink]="[i.lien]">
-        <fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{i.texte}}
+        <fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{ i.texte }}
       </button>
     </div>
   </mat-menu>
 </mat-toolbar>
+
+
 
 
 <div class="app-content">

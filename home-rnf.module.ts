@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,7 +56,8 @@ import { InputErrorPipe } from './pipes/input-error.pipe';
     MatInputModule,
     FontAwesomeModule,
     NgbModule,
-    MatButtonModule
+    MatButtonModule,
+    MatAutocompleteModule
   ],
   exports: [
     FontAwesomeModule,

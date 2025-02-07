@@ -98,3 +98,29 @@ mat-toolbar a {
   font-weight: lighter;
   font-size: smaller;
 }
+
+/* Assurez-vous que le mat-toolbar utilise bien flex et centre ses éléments verticalement */
+mat-toolbar {
+  display: flex;
+  align-items: center;
+}
+
+/* Style pour le conteneur de la barre de recherche */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin: 0 20px; // espace horizontal éventuel
+}
+
+/* Ajuster le mat-form-field pour éviter qu'il ne dépasse */
+.search-bar mat-form-field {
+  width: 800px; // ajustez la largeur selon vos besoins
+  margin-top: 0; // supprimez toute marge par défaut
+  flex-direction: row;
+}
+
+/* Optionnel : Ajuster les paddings internes du mat-form-field */
+.search-bar .mat-form-field-wrapper {
+  padding-top: 0;
+  padding-bottom: 0;
+}
