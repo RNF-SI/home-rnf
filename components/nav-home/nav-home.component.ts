@@ -42,15 +42,17 @@ export class NavHomeComponent implements OnInit {
 
     // Récupération des items de recherche depuis le backend,
     // en passant l'URL de l'API définie dans AppConfig.
-    this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
-      this.searchItems = items;
-      // Initialisation de l'autocomplete dès que la liste est disponible
-      this.filteredSearchItems = this.searchControl.valueChanges.pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value?.name),
-        map(name => name ? this._filter(name) : this.searchItems.slice())
-      );
-    });
+    if (this.searchInput) {
+      this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
+        this.searchItems = items;
+        // Initialisation de l'autocomplete dès que la liste est disponible
+        this.filteredSearchItems = this.searchControl.valueChanges.pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value?.name),
+          map(name => name ? this._filter(name) : this.searchItems.slice())
+        );
+      });
+    }
   }
 
   // Filtrage des items en fonction de la saisie utilisateur (non sensible à la casse)
@@ -89,14 +91,6 @@ export class NavHomeComponent implements OnInit {
 
   public get user(): null | User {
     return this._authService.getCurrentUser();
-  }
-
-  onSearch(searchTerm: string): void {
-    if (searchTerm && searchTerm.trim()) {
-      console.log("Recherche lancée pour :", searchTerm);
-      // Exemple : rediriger vers une page de résultats en passant le terme recherché dans les queryParams
-      this.router.navigate(['/search'], { queryParams: { q: searchTerm } });
-    }
   }
 
 }
