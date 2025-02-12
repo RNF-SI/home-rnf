@@ -37,7 +37,7 @@
   <a [routerLink]="'login'" *ngIf="!signedIn">
     <fa-icon [icon]="['fas', 'right-to-bracket']" size="2x"></fa-icon>
   </a>
-  <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn">
+  <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn" class="user">
     {{ user!.prenom_role | titlecase }} {{ user!.nom_role | titlecase }}
     <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>
