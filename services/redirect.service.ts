@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, NavigationExtras } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 
 export interface RedirectionExtras extends NavigationExtras {
@@ -10,7 +10,7 @@ export interface RedirectionExtras extends NavigationExtras {
 @Injectable({
   providedIn: 'root'
 })
-export class RedirectService implements CanActivate {
+export class RedirectService  {
 
   constructor(@Inject(DOCUMENT) readonly document: Document, readonly router: Router) { }
 
