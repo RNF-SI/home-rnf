@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -28,50 +28,44 @@ import { NavHomeComponent } from './components/nav-home/nav-home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InputErrorPipe } from './pipes/input-error.pipe';
 
-@NgModule({
-  declarations: [
-    LoginComponent,
-    LogoutComponent,
-    NavHomeComponent,
-    InputErrorPipe,
-    LoadingSpinnerComponent,
-    ForgotPasswordComponent,
-    NotFoundComponent,
-    AccessDeniedComponent
-  ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatMenuModule,
-    MatIconModule,
-    MatToolbarModule,
-    HttpClientModule,
-    MatDialogModule,
-    MatProgressBarModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FontAwesomeModule,
-    NgbModule,
-    MatButtonModule,
-    MatAutocompleteModule
-  ],
-  exports: [
-    FontAwesomeModule,
-    CommonModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LoadingSpinnerComponent
-  ],
-  providers: [
-    { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} }
-  ],
-})
+@NgModule({ declarations: [
+        LoginComponent,
+        LogoutComponent,
+        NavHomeComponent,
+        InputErrorPipe,
+        LoadingSpinnerComponent,
+        ForgotPasswordComponent,
+        NotFoundComponent,
+        AccessDeniedComponent
+    ],
+    exports: [
+        FontAwesomeModule,
+        CommonModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        LoadingSpinnerComponent
+    ], imports: [CommonModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatMenuModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatDialogModule,
+        MatProgressBarModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FontAwesomeModule,
+        NgbModule,
+        MatButtonModule,
+        MatAutocompleteModule], providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class HomeRnfModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(
