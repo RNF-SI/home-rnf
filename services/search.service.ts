@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppConfig } from 'src/conf/app.config';
+import { environment } from 'src/environments/environment';
 
 export interface SearchItem {
   slug: string;
@@ -16,6 +16,6 @@ export class SearchService {
   constructor(private http: HttpClient) { }
 
   getSearchItems(apiUrl: string): Observable<SearchItem[]> {
-    return this.http.get<SearchItem[]>(AppConfig.API_ENDPOINT + apiUrl);
+    return this.http.get<SearchItem[]>(`${environment.apiUrl}/${apiUrl}`);
   }
 }
