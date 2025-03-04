@@ -88,7 +88,7 @@ export class AuthService {
 
 
   loginOrPwdRecovery(data: any): Observable<any> {
-    return this._http.post<any>(`${environment.apiGeoNature}/login/recovery`, data);
+    return this._http.post<any>(`https://plateformes.reserves-naturelles.org/api/login/recovery`, data);
   }
 
   logout() {
