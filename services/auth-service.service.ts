@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -62,10 +62,6 @@ export class AuthService {
   signinUser(identifiant: string, password: string): Observable<any> {
     this.isLoading = true;
 
-    const headers = new HttpHeaders()
-      .set('content-type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-
     const options = {
       login: identifiant,
       password: password,
@@ -76,22 +72,20 @@ export class AuthService {
       withCredentials: true
     };
 
-    this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).subscribe(response => {
-      const token = response.token;
-    });
-
     return this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).pipe(
-      map(
-        (response) => {
-          this.getRnsByUser(response.user.id_role).subscribe(res => {
+      // Chaîner l'appel à getRnsByUser après la réponse de l'authentification
+      switchMap(response =>
+        this.getRnsByUser(response.user.id_role).pipe(
+          map(res => {
             this.setCurrentUser(response.user, response.token, response.expires, res.items);
+            // Retourner l'utilisateur pour indiquer que la connexion a réussi
+            return response.user;
           })
-
-        }
-
+        )
       )
-    )
+    );
   }
+
 
   loginOrPwdRecovery(data: any): Observable<any> {
     return this._http.post<any>(`${environment.apiGeoNature}/login/recovery`, data);

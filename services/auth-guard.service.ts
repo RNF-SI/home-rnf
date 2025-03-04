@@ -1,35 +1,45 @@
-import { inject, Inject, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from './auth-service.service'; 
-
-
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { LoginComponent } from '../components/login/login.component';
+import { AuthService } from './auth-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService {
+export class AuthGuardService implements CanActivate {
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    ) {
+    private dialog: MatDialog
+  ) { }
 
-  }
-
-canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     if (this.authService.authenticated) {
-      // logged in so return true
-        return true;
+      // Si l'utilisateur est déjà authentifié, on retourne true directement.
+      return of(true);
     }
 
-    // not logged in so redirect to login page with the return url
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    return false;
-}
+    // Sinon, on ouvre le dialogue de login
+    const dialogRef = this.dialog.open(LoginComponent, {
+      data: { returnUrl: state.url },
+      disableClose: true // Pour forcer l'utilisateur à se connecter
+    });
 
-}
-
-export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
-  return inject(AuthGuardService).canActivate(next, state);
+    // Le guard renvoie un Observable qui attend que le dialogue se ferme.
+    return dialogRef.afterClosed().pipe(
+      map(result => {
+        if (result) {
+          // Si le dialogue retourne un résultat (login réussi), on retourne true.
+          return true;
+        } else {
+          // Sinon, on retourne false (accès refusé).
+          return false;
+        }
+      })
+    );
+  }
 }
