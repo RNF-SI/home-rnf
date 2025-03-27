@@ -12,7 +12,7 @@ export class LogoutLinkService {
   canActivate() {
 
     // Do nothing if already out
-    if(!this.auth.authenticated) { return false; }
+    if (!this.auth.isAuthenticated()) { return false; }
 
     // Signs-out and redirects to home
     this.auth.logout();

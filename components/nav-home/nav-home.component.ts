@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
-import { User } from 'src/app/home-rnf/models/user.model';
 import { AppConfig } from 'src/conf/app.config';
 import { AuthService } from '../../services/auth-service.service';
 import { SearchItem, SearchService } from '../../services/search.service';
@@ -36,6 +35,7 @@ export class NavHomeComponent implements OnInit {
   placeholder = AppConfig.SEARCH_PLACEHOLDER;
 
   ngOnInit(): void {
+    this._authService.debugToken()
     this.router.events.subscribe(() => {
       this.isHomePage = this.router.url === '/';
     });
@@ -85,12 +85,14 @@ export class NavHomeComponent implements OnInit {
     }
   }
 
-  public get signedIn(): boolean {
-    return this._authService.authenticated || false;
+  login(): void {
+    this._authService.login();
   }
 
-  public get user(): null | User {
-    return this._authService.getCurrentUser();
+  public signedIn$ = this._authService.isAuthenticated();
+
+  public get user(): any {
+    return this._authService.getUsername();
   }
 
 }

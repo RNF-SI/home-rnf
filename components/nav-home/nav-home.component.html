@@ -34,10 +34,10 @@
   <span class="example-spacer"></span>
 
   <!-- Liens connexion / utilisateur -->
-  <a [routerLink]="'login'" *ngIf="!signedIn">
+  <a (click)="login()" *ngIf="!(signedIn$ | async)" style="cursor: pointer;">
     <fa-icon [icon]="['fas', 'right-to-bracket']" size="2x"></fa-icon>
   </a>
-  <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn" class="user">
+  <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn$ | async" class="user">
     {{ user!.prenom_role | titlecase }} {{ user!.nom_role | titlecase }}
     <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>

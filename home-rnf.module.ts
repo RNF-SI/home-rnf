@@ -20,52 +20,50 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from '../app-routing.module';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
-import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { NavHomeComponent } from './components/nav-home/nav-home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InputErrorPipe } from './pipes/input-error.pipe';
 
-@NgModule({ declarations: [
-        LoginComponent,
-        LogoutComponent,
-        NavHomeComponent,
-        InputErrorPipe,
-        LoadingSpinnerComponent,
-        ForgotPasswordComponent,
-        NotFoundComponent,
-        AccessDeniedComponent
-    ],
-    exports: [
-        FontAwesomeModule,
-        CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LoadingSpinnerComponent
-    ], imports: [CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatMenuModule,
-        MatIconModule,
-        MatToolbarModule,
-        MatDialogModule,
-        MatProgressBarModule,
-        MatFormFieldModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        FontAwesomeModule,
-        NgbModule,
-        MatButtonModule,
-        MatAutocompleteModule], providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule({
+  declarations: [
+    LogoutComponent,
+    NavHomeComponent,
+    InputErrorPipe,
+    LoadingSpinnerComponent,
+    NotFoundComponent,
+    AccessDeniedComponent
+  ],
+  exports: [
+    FontAwesomeModule,
+    CommonModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    LoadingSpinnerComponent
+  ], imports: [CommonModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatDialogModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    FontAwesomeModule,
+    NgbModule,
+    MatButtonModule,
+    MatAutocompleteModule], providers: [
+      { provide: MAT_DIALOG_DATA, useValue: {} },
+      { provide: MatDialogRef, useValue: {} },
+      provideHttpClient(withInterceptorsFromDi())
+    ]
+})
 export class HomeRnfModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(

@@ -1,143 +1,79 @@
-import { HttpClient } from '@angular/common/http';
+// auth.service.ts
 import { Injectable } from '@angular/core';
-import { Observable, of, switchMap } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { AppConfig } from 'src/conf/app.config';
-import { environment } from 'src/environments/environment';
+import { jwtDecode } from 'jwt-decode';
+import { KeycloakService } from 'keycloak-angular';
 
-import { userAppRulesObj, userRnsObj } from '../models/user.model';
+export interface KeycloakToken {
+  realm_access?: { roles: string[] };
+  resource_access?: {
+    [clientId: string]: { roles: string[] }
+  };
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  public user: null = null;
-  loginError: boolean = false;
-  public isLoading = false;
+  constructor(private keycloakService: KeycloakService) { }
 
-  constructor(
-    private _http: HttpClient
-  ) { }
-
-  setCurrentUser(user: any, token: any, expireDate: any, rns: any) {
-    localStorage.setItem('current_user', JSON.stringify(user));
-    localStorage.setItem("tk_id_token", token)
-    localStorage.setItem('expires_at', expireDate);
-    localStorage.setItem('rnsUser', JSON.stringify(rns))
+  // Vérifie si l'utilisateur est authentifié
+  public isAuthenticated(): Promise<boolean> {
+    return this.keycloakService.isLoggedIn();
   }
 
+  // Renvoie le token d'accès (JWT)
+  public getToken(): Promise<string> {
+    return this.keycloakService.getToken();
+  }
 
-  getCurrentUser() {
-    let currentUser = localStorage.getItem('current_user');
-    let user;
-    if (currentUser) {
-      user = JSON.parse(currentUser);
-    } else {
-      user = null
+  // Retourne le nom d'utilisateur (s'il est défini dans le token)
+  public getUsername(): string {
+    return this.keycloakService.getUsername();
+  }
+
+  // Lance la procédure de login (redirige vers la page de connexion Keycloak)
+  public login(): void {
+    this.keycloakService.login();
+    this.keycloakService.getToken().then(token => console.log(token));
+  }
+
+  // Déconnecte l'utilisateur
+  public logout(): void {
+    this.keycloakService.logout();
+  }
+
+  async checkUserRole(role: string): Promise<boolean> {
+    const token = await this.keycloakService.getToken();
+    const decodedToken: KeycloakToken = jwtDecode(token);
+
+    // Vérifier dans les rôles du realm
+    if (decodedToken.realm_access && decodedToken.realm_access.roles.includes(role)) {
+      return true;
     }
-    return user;
-  }
-
-  getRnsUser() {
-    let currentRnsUser = localStorage.getItem('rnsUser');
-    let rnsUser;
-    if (currentRnsUser) {
-      rnsUser = JSON.parse(currentRnsUser);
-    } else {
-      rnsUser = null
+    // Vérifier dans les rôles spécifiques au client 'waterwise'
+    if (
+      decodedToken.resource_access &&
+      decodedToken.resource_access['waterwise'] &&
+      decodedToken.resource_access['waterwise'].roles.includes(role)
+    ) {
+      return true;
     }
-    return rnsUser;
+    return false;
   }
 
-  public get authenticated(): boolean {
-
-    if (this.getCurrentUser() != null) {
-      return true
-    } else {
-      return false;
-    }
+  debugToken(): void {
+    this.keycloakService.getToken().then(token => {
+      console.log('Token JWT:', token);
+      try {
+        const decoded = jwtDecode(token);
+        console.log('Token décodé:', decoded);
+      } catch (error) {
+        console.error('Erreur lors du décodage du token:', error);
+      }
+    }).catch(err => {
+      console.error('Erreur lors de la récupération du token:', err);
+    });
   }
 
-  signinUser(identifiant: string, password: string): Observable<any> {
-    this.isLoading = true;
-
-    const options = {
-      login: identifiant,
-      password: password,
-      id_application: AppConfig.ID_APPLICATION_GEONATURE
-    };
-
-    const httpOptions = {
-      withCredentials: true
-    };
-
-    return this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).pipe(
-      // Chaîner l'appel à getRnsByUser après la réponse de l'authentification
-      switchMap(response =>
-        this.getRnsByUser(response.user.id_role).pipe(
-          map(res => {
-            this.setCurrentUser(response.user, response.token, response.expires, res.items);
-            // Retourner l'utilisateur pour indiquer que la connexion a réussi
-            return response.user;
-          })
-        )
-      )
-    );
-  }
-
-
-  loginOrPwdRecovery(data: any): Observable<any> {
-    return this._http.post<any>(`https://plateformes.reserves-naturelles.org/api/login/recovery`, data);
-  }
-
-  logout() {
-    this.cleanLocalStorage();
-  }
-
-  private cleanLocalStorage() {
-    // Remove only local storage items need to clear when user logout
-    localStorage.removeItem('current_user');
-    // localStorage.removeItem('modules');
-  }
-
-  getRnsByUser(id_role: number): Observable<userRnsObj> {
-    return this._http.get<userRnsObj>(`${environment.apiGeoNature}/exports/api/3?token=${environment.token}&role_id=${id_role}`);
-  }
-
-  getRulesByUserAndApplication(id_role: number, id_application: number): Observable<userAppRulesObj> {
-    return this._http.get<userAppRulesObj>(`${environment.apiGeoNature}/exports/api/4?token=${environment.token}&id_role=${id_role}&id_application=${id_application}`);
-  }
-
-  hasAccessToRn(rnId: string | null): Observable<boolean> {
-    if (!this.authenticated) {
-      return of(false); // Retourner false immédiatement si l'utilisateur n'est pas authentifié
-    }
-
-    const currentUser = this.getCurrentUser(); // Méthode pour obtenir l'utilisateur actuel
-    if (!currentUser) {
-      return of(false); // Retourner false si aucune information utilisateur n'est disponible
-    }
-
-    // Vérifier les règles d'accès via getRulesByUserAndApplication
-    return this.getRulesByUserAndApplication(currentUser.id_role, environment.id_application).pipe(
-      switchMap(result => {
-        // Si l'utilisateur a le droit maximal, autoriser immédiatement
-        if (result.items[0]?.id_droit_max === 6) {
-          return of(true);
-        }
-
-        // Vérifier les liens avec RN
-        const userRns = this.getRnsUser();
-        const hasRnAccess = userRns.some((rn: { rn_id: string | null }) => rn.rn_id === rnId);
-
-        // Retourner true ou false selon l'accès RN
-        return of(hasRnAccess);
-      }),
-      catchError(() => {
-        // En cas d'erreur (API ou autre), refuser l'accès
-        return of(false);
-      })
-    );
-  }
 }
