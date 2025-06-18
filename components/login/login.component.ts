@@ -13,9 +13,10 @@ export interface LoginData {
 }
 
 @Component({
-  selector: 'pnx-login',
-  templateUrl: 'login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'pnx-login',
+    templateUrl: 'login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent {
   enable_sign_up: boolean = false;

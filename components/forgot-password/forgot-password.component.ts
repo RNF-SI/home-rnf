@@ -6,9 +6,10 @@ import { AuthService } from '../../services/auth-service.service';
 import { RedirectService } from '../../services/redirect.service';
 
 @Component({
-  selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+    selector: 'app-forgot-password',
+    templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss'],
+    standalone: false
 })
 export class ForgotPasswordComponent {
 

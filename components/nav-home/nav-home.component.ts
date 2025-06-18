@@ -8,9 +8,10 @@ import { AuthService } from '../../services/auth-service.service';
 import { SearchItem, SearchService } from '../../services/search.service';
 
 @Component({
-  selector: 'app-nav-home',
-  templateUrl: './nav-home.component.html',
-  styleUrls: ['./nav-home.component.scss']
+    selector: 'app-nav-home',
+    templateUrl: './nav-home.component.html',
+    styleUrls: ['./nav-home.component.scss'],
+    standalone: false
 })
 export class NavHomeComponent implements OnInit {
 
