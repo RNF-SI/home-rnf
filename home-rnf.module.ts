@@ -28,24 +28,7 @@ import { NavHomeComponent } from './components/nav-home/nav-home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InputErrorPipe } from './pipes/input-error.pipe';
 
-@NgModule({ declarations: [
-        LoginComponent,
-        LogoutComponent,
-        NavHomeComponent,
-        InputErrorPipe,
-        LoadingSpinnerComponent,
-        ForgotPasswordComponent,
-        NotFoundComponent,
-        AccessDeniedComponent
-    ],
-    exports: [
-        FontAwesomeModule,
-        CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LoadingSpinnerComponent
-    ], imports: [CommonModule,
+@NgModule({imports: [CommonModule,
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
@@ -61,7 +44,16 @@ import { InputErrorPipe } from './pipes/input-error.pipe';
         FontAwesomeModule,
         NgbModule,
         MatButtonModule,
-        MatAutocompleteModule], providers: [
+        MatAutocompleteModule,
+        LoginComponent,
+        LogoutComponent,
+        NavHomeComponent,
+        InputErrorPipe,
+        LoadingSpinnerComponent,
+        ForgotPasswordComponent,
+        NotFoundComponent,
+        AccessDeniedComponent
+      ], providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
         provideHttpClient(withInterceptorsFromDi())
