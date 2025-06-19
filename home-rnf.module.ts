@@ -18,7 +18,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from '../app-routing.module';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
@@ -29,9 +28,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InputErrorPipe } from './pipes/input-error.pipe';
 
 @NgModule({imports: [CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
         MatMenuModule,
         MatIconModule,
         MatToolbarModule,
