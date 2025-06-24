@@ -18,7 +18,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from '../app-routing.module';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
@@ -28,27 +27,7 @@ import { NavHomeComponent } from './components/nav-home/nav-home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InputErrorPipe } from './pipes/input-error.pipe';
 
-@NgModule({ declarations: [
-        LoginComponent,
-        LogoutComponent,
-        NavHomeComponent,
-        InputErrorPipe,
-        LoadingSpinnerComponent,
-        ForgotPasswordComponent,
-        NotFoundComponent,
-        AccessDeniedComponent
-    ],
-    exports: [
-        FontAwesomeModule,
-        CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LoadingSpinnerComponent
-    ], imports: [CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
+@NgModule({imports: [CommonModule,
         MatMenuModule,
         MatIconModule,
         MatToolbarModule,
@@ -61,7 +40,16 @@ import { InputErrorPipe } from './pipes/input-error.pipe';
         FontAwesomeModule,
         NgbModule,
         MatButtonModule,
-        MatAutocompleteModule], providers: [
+        MatAutocompleteModule,
+        LoginComponent,
+        LogoutComponent,
+        NavHomeComponent,
+        InputErrorPipe,
+        LoadingSpinnerComponent,
+        ForgotPasswordComponent,
+        NotFoundComponent,
+        AccessDeniedComponent
+      ], providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
         provideHttpClient(withInterceptorsFromDi())

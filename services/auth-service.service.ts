@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppConfig } from 'src/conf/app.config';
@@ -16,9 +16,7 @@ export class AuthService {
   loginError: boolean = false;
   public isLoading = false;
 
-  constructor(
-    private _http: HttpClient
-  ) { }
+  private _http = inject(HttpClient)
 
   setCurrentUser(user: any, token: any, expireDate: any, rns: any) {
     localStorage.setItem('current_user', JSON.stringify(user));

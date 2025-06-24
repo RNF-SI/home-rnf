@@ -1,7 +1,8 @@
-@import 'src/styles/custom-theme';
+@use 'src/styles/custom-theme' as custom;
+@use '@angular/material' as mat;
 
 div {
-    text-align: center;
-    font-weight: bold;
-    color: mat-color(map-get($custom-theme, primary), 500);
+  text-align: center;
+  font-weight: bold;
+  color: mat.get-color-from-palette(custom.$custom-primary, 500);
 }

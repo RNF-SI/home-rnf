@@ -1,11 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppConfig } from '../../../../conf/app.config';
 import { AuthService } from '../../services/auth-service.service';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { InputErrorPipe } from '@app/pipes/input-error.pipe';
 
 export interface LoginData {
   code?: string;
@@ -13,9 +21,11 @@ export interface LoginData {
 }
 
 @Component({
-  selector: 'pnx-login',
-  templateUrl: 'login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'pnx-login',
+    templateUrl: 'login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone:true,
+    imports:[CommonModule,ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatIconModule,MatProgressBarModule,FontAwesomeModule,InputErrorPipe]
 })
 export class LoginComponent {
   enable_sign_up: boolean = false;
