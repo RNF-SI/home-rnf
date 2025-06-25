@@ -11,13 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
@@ -38,7 +35,6 @@ import { InputErrorPipe } from './pipes/input-error.pipe';
         ReactiveFormsModule,
         MatInputModule,
         FontAwesomeModule,
-        NgbModule,
         MatButtonModule,
         MatAutocompleteModule,
         LoginComponent,
