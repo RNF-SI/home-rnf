@@ -27,6 +27,7 @@ export class NavHomeComponent implements OnInit {
   menu = AppConfig.menu;
   menucompte = AppConfig.menucompte
   isHomePage: boolean = false;
+  displayFooter = AppConfig.displayFooter;
 
   // Pour l'autocomplete de recherche
   searchControl = new FormControl();
