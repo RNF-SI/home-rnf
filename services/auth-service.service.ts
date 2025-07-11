@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { userAppRulesObj, userRnsObj } from '../models/user.model';
 import { AppConfig } from 'src/conf/app.config';
 import { environment } from 'src/environments/environment';
 
-import { userAppRulesObj, userRnsObj } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'

@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
-import { User } from 'src/app/home-rnf/models/user.model';
-import { AppConfig } from 'src/conf/app.config';
+
 import { AuthService } from '../../services/auth-service.service';
 import { SearchItem, SearchService } from '../../services/search.service';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AppConfig } from 'src/conf/app.config';
+import { User } from '../../models/user.model';
 
 @Component({
     selector: 'app-nav-home',
