@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -44,7 +44,8 @@ import { InputErrorPipe } from './pipes/input-error.pipe';
         LoadingSpinnerComponent,
         ForgotPasswordComponent,
         NotFoundComponent,
-        AccessDeniedComponent
+        AccessDeniedComponent,
+      
       ], providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },

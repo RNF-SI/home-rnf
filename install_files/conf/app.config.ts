@@ -17,12 +17,7 @@ export const AppConfig = {
             "nomFa": "right-from-bracket" as const,
             "lien": "logout"
         },
-        {
-            "texte":"Mes diagnostics",
-            "classFa":"fas" as const,
-            "nomFa":"chart-pie" as const,
-            "lien":"mes-diagnostics"
-        },
+       
     ],
     "menu": [
         {
@@ -30,29 +25,6 @@ export const AppConfig = {
             "classFa":"fas" as const,
             "nomFa":"house" as const,
             "lien":""
-        },{
-            "nom":"méthodologie", 
-            "classFa":"far" as const,
-            "nomFa":"file-lines" as const,
-            "lien":"methodologie"
-        },
-        {
-            "nom":"diagnostics",
-            "classFa":"fas" as const,
-            "nomFa":"chart-pie" as const,
-            "lien":"diagnostics-liste"
-        },
-        {
-            "nom":"contacter", 
-            "classFa":"far" as const,
-            "nomFa":"address-book" as const,
-            "lien":"contact"
-        },
-        {
-            "nom":"mentions légales", 
-            "classFa":"fas" as const,
-            "nomFa":"file-signature" as const,
-            "lien":"mentions"
         }
     ]
 }
