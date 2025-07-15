@@ -139,7 +139,7 @@ par :
 20. Se placer à la racine du projet et taper npm install
 
 21. Remplacer le contenu du fichier app.component.html par :
-	  "<router-outlet></router-outlet>"
+	  ``<router-outlet></router-outlet>``
 
 22. Dans app.component.ts, ajouter HomeRnfModule dans les imports.
 
