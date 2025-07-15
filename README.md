@@ -10,7 +10,7 @@ Si l'appli dispose également d'un backend, initialiser le git global aux deux d
 	sudo npm uninstall -g @angular/cli
 	sudo npm i -g @angular/cli@19
 
-Si c'est toujours dans une autre version que 15, c'est peut être que le cli est installé en local, dans ce cas enlever le -g (pour global). 
+Si c'est toujours dans une autre version que 19, c'est peut être que le cli est installé en local, dans ce cas enlever le -g (pour global). 
 
 2. Créer le nouveau projet :
 	ng new nomduprojet
@@ -26,15 +26,17 @@ Si c'est toujours dans une autre version que 15, c'est peut être que le cli est
 
 8. Basculer sur la branche angular-19 : git checkout angular-19
 
-9. Créer le répertoire assets dans src de votre projet
+9. Créer le répertoire assets de home-rnf/install-files vers src de votre projet
 
-10. Copier le répertoire fonts de home-rnf/fichiers-utiles et son contenu dans assets qui vient d'être créé
+10. Copier le répertoire environments de home-rnf/install-files vers src de votre projet
 
-11. Copier le répertoire conf de home-rnf/fichiers-utiles et son contenu dans src de votre projet
+11. Copier le répertoire conf de home-rnf/install-files vers src de votre projet
 
-12. Modifier les champs appName, appTitle, appSubTitle, contact du fichier app.config.ts situé dans conf
+12. Copier le répertoire styles de home-rnf/install-files vers src de votre projet
 
-13. Adapter le fichier app-route.ts aux besoins :
+13. Modifier les champs appName, appTitle, appSubTitle, contact du fichier app.config.ts situé dans conf
+
+14. Adapter le fichier app-route.ts aux besoins :
 const routes: Routes = [
   {
     path: '',
@@ -55,28 +57,70 @@ const routes: Routes = [
   }
 ];
 
-14. ajouter HomeRnfModule dans les imports de app.component.ts
+15. ajouter HomeRnfModule dans les imports de app.component.ts
 
-15. copier ces lignes dans les dependencies du fichier package.json de votre projet
+16. Compléter le fichier angular.json du projet (projects>architects>build>options) :
+  "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules",
+                "src",
+                "."
+              ]
+            },
 
-  "@fortawesome/angular-fontawesome": "^1.0.0",
-  "@fortawesome/fontawesome-svg-core": "^6.7.2",
-  "@fortawesome/free-brands-svg-icons": "^6.7.2",
-  "@fortawesome/free-regular-svg-icons": "^6.4.0",
-  "@fortawesome/free-solid-svg-icons": "^6.4.0",
+Puis dans projects>architects>build>configurations>production :
+  "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "20mb",
+                  "maximumError": "50mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "200kB",
+                  "maximumError": "500kB"
+                }
+              ],
 
-puis se placer à la racine de votre projet et taper npm install
+17. Compléter le fichier tsconfig.json du projet. Dans complierOptions, ajouter la ligne :
+  "baseUrl": "./",
 
-16. Remplacer le contenu du fichier app.component.html par :
+18. Dans packaage.json, remplacez les dependencies par celles-ci :
+
+  "dependencies": {
+    "@angular/animations": "^19.2.14",
+    "@angular/cdk": "^19.2.19",
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/material": "^19.2.19",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-browser-dynamic": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "@fortawesome/angular-fontawesome": "^1.0.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "ngx-toaster": "^1.0.1",
+    "ngx-toastr": "^19.0.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+
+19. Se placer à la racine du projet et taper npm install
+
+20. Remplacer le contenu du fichier app.component.html par :
 	<router-outlet></router-outlet>
 
-17. Remplacer le favicon :
+21. Remplacer le favicon :
     cp src/app/home-rnf/install_files/favicon.ico src/favicon.ico
 
-18. Modifier le titre de l'application dans index.html
+22. Modifier le titre de l'application dans index.html
 
-19. Copier le répertoire styles dans src de votre projet
+23. Copier le répertoire styles dans src de votre projet
 
-
-20. lancer l'app
-	ng serve
+24. lancer l'app
+	  ng serve
