@@ -139,14 +139,16 @@ par :
 20. Se placer à la racine du projet et taper npm install
 
 21. Remplacer le contenu du fichier app.component.html par :
-	  <router-outlet></router-outlet>
+	  "<router-outlet></router-outlet>"
 
-22. Remplacer le favicon :
+22. Dans app.component.ts, ajouter HomeRnfModule dans les imports.
+
+23. Remplacer le favicon :
     cp src/app/home-rnf/install_files/favicon.ico src/favicon.ico
 
-23. Modifier le titre de l'application dans index.html
+24. Modifier le titre de l'application dans index.html
 
-24. Remplacer le contenu du fichier styles.scss par :
+25. Remplacer le contenu du fichier styles.scss par :
     @use 'styles/custom-theme.scss' as custom;
     @use 'conf/custom.scss' as conf;
     @use '@angular/material' as mat;
@@ -175,5 +177,5 @@ par :
         margin-top: 1%!important;
     }
 
-24. lancer l'app
+26. lancer l'app
 	  ng serve
