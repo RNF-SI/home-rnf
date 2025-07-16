@@ -11,7 +11,7 @@
 </div>
 <mat-toolbar>
   <!-- Liens du menu -->
-  <div *ngIf="!isMobile">
+  <div *ngIf="!isMobile" class="menu">
     <div *ngFor="let e of menu">
       <a [routerLink]="e.lien">
         <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom | uppercase }}
@@ -52,11 +52,11 @@
   <a [routerLink]="'login'" *ngIf="!signedIn">
     <fa-icon [icon]="['fas', 'right-to-bracket']" size="2x"></fa-icon>
   </a>
-  <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn" class="user">
+  <a [matMenuTriggerFor]="menuSettings" *ngIf="signedIn" class="user menuCompte">
     {{ user!.prenom_role | titlecase }} {{ user!.nom_role | titlecase }}
     <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>
-  <mat-menu #menuSettings="matMenu">
+  <mat-menu #menuSettings="matMenu" >
     <div *ngFor="let i of menucompte">
       <button mat-menu-item [routerLink]="[i.lien]">
         <fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{ i.texte }}

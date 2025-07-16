@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
@@ -25,7 +25,7 @@ import { SearchBarDialogComponent } from '../search-bar-dialog/search-bar-dialog
     styleUrls: ['./nav-home.component.scss'],
     imports:[CommonModule,FontAwesomeModule,RouterModule,MatMenuModule,MatFormFieldModule,ReactiveFormsModule,MatToolbarModule,MatInputModule,MatAutocompleteModule,MatOptionModule,MatIconModule,MatMenuModule]
 })
-export class NavHomeComponent implements OnInit {
+export class NavHomeComponent implements OnInit,AfterViewInit {
 
   private _authService = inject(AuthService);
   private router = inject(Router);
@@ -70,11 +70,30 @@ export class NavHomeComponent implements OnInit {
       });
       this.checkScreenSize();
       window.addEventListener('resize', () => this.checkScreenSize());
+      this.calculateWidthSearchBar();
     }
   }
 
+  ngAfterViewInit(): void {
+    this.calculateWidthSearchBar();
+  }
+
+  calculateWidthSearchBar(){
+    const largeurPage:number = window.innerWidth;
+    const menu:HTMLElement = document.querySelector(".menu")!;
+    let searchBar:HTMLElement = document.querySelector(".search-bar")!;
+    const menuLogin:HTMLElement = document.querySelector(".menuCompte")!;
+    console.log(largeurPage,menu.offsetWidth,searchBar.offsetWidth,menuLogin.offsetWidth);
+    const placeForSearchBar:number = largeurPage - (menu.offsetWidth + menuLogin.offsetWidth);
+    if(placeForSearchBar/2 <= 180){
+      this.isMobile = true;
+    }else{
+      searchBar.style.width = placeForSearchBar/2 + "px";
+    }
+   
+  }
   checkScreenSize() {
-    this.isMobile = window.innerWidth <= 470;
+    this.isMobile = window.innerWidth <= 600;
   }
   // Filtrage des items en fonction de la saisie utilisateur (non sensible à la casse)
   private _filter(name: string): SearchItem[] {
