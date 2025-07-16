@@ -1,5 +1,4 @@
 @use 'src/styles/custom-theme.scss' as custom;
-// Pas besoin de mat ou mat-core ici pour des couleurs statiques via variables CSS
 
 .example-spacer {
   flex: 1 1 auto;
@@ -10,7 +9,7 @@
   height: 150px;
   background: url(/assets/images/embleme.png) no-repeat, url(/assets/images/banierre.jpg) no-repeat;
   background-size: 100px, cover;
-  display: inline-block;
+  display: block;
   color: white;
   position: relative;
 }
@@ -20,9 +19,10 @@
   height: 600px;
   background: url(/assets/images/embleme.png) no-repeat, url(/assets/images/banierre.jpg) no-repeat;
   background-size: 300px, cover;
-  display: inline-block;
+  display: block;
   color: white;
   position: relative;
+  background-color: red !important;
 }
 
 .title-bold {
@@ -30,24 +30,15 @@
   font-size: 60px;
 }
 
-.title {
-  padding-top: 30px;
-  padding-left: 150px;
+.title,.title-home {
+  padding-left: 5vw; 
+  padding-right: 5vw;
   text-align: left;
   font-family: "ArimaMaduraiRegular";
   font-size: 55px;
   line-height: 1;
-  width: 1000px;
-}
-
-.title-home {
-  padding-top: 280px;
-  padding-left: 150px;
-  text-align: left;
-  font-family: "ArimaMaduraiRegular";
-  font-size: 55px;
-  line-height: 1;
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
 }
 
 .subtitle {
@@ -58,9 +49,27 @@
   background-color: var(--custom-primary-500);
   line-height: 1.75;
   text-align: left;
-  margin-left: 145px;
+  margin-inline: 5vw;
   padding: 5px;
   color: white;
+}
+
+@media (max-width: 600px) {
+  .title, .title-home {
+    font-size: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    margin-inline: 5vw;
+  }
+
+  .panel-heading-home {
+    height: auto;
+    background-size: 150px, cover;
+  }
 }
 
 .white-icon {
@@ -110,7 +119,8 @@ mat-toolbar a {
 }
 
 .search-bar mat-form-field {
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   margin-top: 0;
   flex-direction: row;
 }
