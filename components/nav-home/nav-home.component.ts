@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
@@ -15,20 +15,23 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppConfig } from 'src/conf/app.config';
 import { User } from '../../models/user.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchBarDialogComponent } from '../search-bar-dialog/search-bar-dialog.component';
 
 @Component({
     selector: 'app-nav-home',
     templateUrl: './nav-home.component.html',
     styleUrls: ['./nav-home.component.scss'],
-    imports:[CommonModule,FontAwesomeModule,RouterModule,MatMenuModule,MatFormFieldModule,ReactiveFormsModule,MatToolbarModule,MatInputModule,MatAutocompleteModule,MatOptionModule]
+    imports:[CommonModule,FontAwesomeModule,RouterModule,MatMenuModule,MatFormFieldModule,ReactiveFormsModule,MatToolbarModule,MatInputModule,MatAutocompleteModule,MatOptionModule,MatIconModule,MatMenuModule]
 })
 export class NavHomeComponent implements OnInit {
 
-  constructor(
-    public _authService: AuthService,
-    private router: Router,
-    private searchService: SearchService
-  ) { }
+  private _authService = inject(AuthService);
+  private router = inject(Router);
+  private searchService = inject(SearchService);
+  private dialog = inject(MatDialog);
+
 
   // Paramètres provenant d'AppConfig pour la navbar
   title = AppConfig.appTitle;
@@ -44,6 +47,9 @@ export class NavHomeComponent implements OnInit {
   filteredSearchItems!: Observable<SearchItem[]>;
   searchInput = AppConfig.SEARCH_INPUT;
   placeholder = AppConfig.SEARCH_PLACEHOLDER;
+  isMobile = false;
+
+
 
   ngOnInit(): void {
     this.router.events.subscribe(() => {
@@ -62,9 +68,14 @@ export class NavHomeComponent implements OnInit {
           map(name => name ? this._filter(name) : this.searchItems.slice())
         );
       });
+      this.checkScreenSize();
+      window.addEventListener('resize', () => this.checkScreenSize());
     }
   }
 
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 470;
+  }
   // Filtrage des items en fonction de la saisie utilisateur (non sensible à la casse)
   private _filter(name: string): SearchItem[] {
     const filterValue = this.removeAccents(name.toLowerCase());
@@ -93,6 +104,13 @@ export class NavHomeComponent implements OnInit {
         this.searchControl.setValue('');
       });
     }
+  }
+
+  toggleSearchBar(){
+    this.dialog.open(SearchBarDialogComponent, {
+      width: '100%',
+      maxWidth: '90vw'
+    });
   }
 
   public get signedIn(): boolean {

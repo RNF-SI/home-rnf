@@ -11,14 +11,26 @@
 </div>
 <mat-toolbar>
   <!-- Liens du menu -->
-  <div *ngFor="let e of menu">
-    <a [routerLink]="e.lien">
-      <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom | uppercase }}
-    </a>
+  <div *ngIf="!isMobile">
+    <div *ngFor="let e of menu">
+      <a [routerLink]="e.lien">
+        <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom | uppercase }}
+      </a>
+    </div>
   </div>
 
-  <!-- Barre de recherche -->
-  <div class="search-bar" *ngIf="searchInput">
+  <button *ngIf="isMobile" mat-icon-button [matMenuTriggerFor]="menuBurger" class="burger">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <mat-menu #menuBurger="matMenu" >
+    <button mat-menu-item *ngFor="let e of menu" [routerLink]="e.lien">
+      <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom }}
+    </button>
+  </mat-menu>
+ 
+   <!-- Barre de recherche -->
+  <div class="search-bar" *ngIf="!isMobile && searchInput">
     <mat-form-field>
       <mat-label>Recherche</mat-label>
       <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" [placeholder]=placeholder>
@@ -30,6 +42,9 @@
       </mat-autocomplete>
     </mat-form-field>
   </div>
+  <button class="loupe" mat-icon-button *ngIf="searchInput && isMobile" (click)="toggleSearchBar()">
+    <fa-icon [icon]="['fas', 'magnifying-glass']"></fa-icon>
+  </button>
 
   <span class="example-spacer"></span>
 
@@ -49,9 +64,6 @@
     </div>
   </mat-menu>
 </mat-toolbar>
-
-
-
 
 <div class="app-content">
   <div>

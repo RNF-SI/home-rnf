@@ -54,11 +54,13 @@
   color: white;
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) and (min-width:470px){
   .title, .title-home {
     font-size: 30px;
     padding-left: 20px;
     padding-right: 20px;
+    color:black;
+    padding-top: 1%;
   }
 
   .subtitle {
@@ -69,6 +71,38 @@
   .panel-heading-home {
     height: auto;
     background-size: 150px, cover;
+  }
+
+  .search-bar mat-form-field {
+    flex: 1 1 auto;
+    width: 50% !important;
+    min-width: 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-infix {
+    min-width: 0 !important; 
+    width: 50% !important;
+  }
+
+}
+
+@media (max-width: 470px) {
+  .search-bar {
+    display: none;
+  }
+
+  .title, .title-home {
+    font-size: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color:black;
+    padding-top: 3%;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    margin-inline: 5vw;
+    color: black;
   }
 }
 
@@ -90,6 +124,8 @@
 .text-center {
   text-align: center !important;
 }
+
+
 
 mat-toolbar {
   color: white;
@@ -116,13 +152,19 @@ mat-toolbar a {
   display: flex;
   align-items: center;
   margin: 0 20px;
+  justify-content: center;
+  width: 100%;
+  padding: 0 5vw
 }
 
 .search-bar mat-form-field {
+  flex: 1 1 auto;
   width: 100%;
-  max-width: 800px;
-  margin-top: 0;
-  flex-direction: row;
+  min-width: 0 !important;
+}
+
+input.mat-mdc-input-element {
+  min-width: 0 !important; 
 }
 
 .search-bar .mat-form-field-wrapper {
@@ -132,4 +174,20 @@ mat-toolbar a {
 
 .user {
   cursor: pointer;
+}
+
+.loupe{
+  margin-left:5%;
+  font-size: larger;
+  background-color: var(--custom-primary-500);
+  border:none;
+  color:white;
+  ;
+}
+
+.burger{
+  background-color: var(--custom-primary-500);
+  border:none;
+  color:white;
+  font-size: larger;
 }
