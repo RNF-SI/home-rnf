@@ -42,7 +42,7 @@
       </mat-autocomplete>
     </mat-form-field>
   </div>
-  <button class="loupe" mat-icon-button *ngIf="searchInput && isMobile" (click)="toggleSearchBar()">
+  <button class="loupe" mat-icon-button *ngIf="searchInput && isMobile" (click)="toggleSearchBar()" #searchButton>
     <fa-icon [icon]="['fas', 'magnifying-glass']"></fa-icon>
   </button>
 

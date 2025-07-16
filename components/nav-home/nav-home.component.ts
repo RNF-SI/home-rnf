@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
@@ -49,6 +49,7 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
   placeholder = AppConfig.SEARCH_PLACEHOLDER;
   isMobile = false;
 
+  @ViewChild('searchButton', { read: ElementRef }) searchButton!: ElementRef;
 
 
   ngOnInit(): void {
@@ -126,9 +127,17 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
   }
 
   toggleSearchBar(){
+
+    const rect = this.searchButton.nativeElement.getBoundingClientRect();
+
     this.dialog.open(SearchBarDialogComponent, {
-      width: '100%',
-      maxWidth: '90vw'
+      width: '220px',
+      hasBackdrop: true,
+      position: {
+        top: rect.bottom + 'px',
+        left: rect.left + 'px'
+      },
+      panelClass: 'custom-search-dialog'
     });
   }
 
