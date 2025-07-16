@@ -76,15 +76,19 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.calculateWidthSearchBar();
+    if (this.searchInput && window.innerWidth >= 600){
+      this.calculateWidthSearchBar();
+    }
+    
   }
 
+  //Calcule la place disponible pour la barre de recherche et passe le menu en mode mobile si place trop petite.
   calculateWidthSearchBar(){
     const largeurPage:number = window.innerWidth;
     const menu:HTMLElement = document.querySelector(".menu")!;
     let searchBar:HTMLElement = document.querySelector(".search-bar")!;
     const menuLogin:HTMLElement = document.querySelector(".menuCompte")!;
-    console.log(largeurPage,menu.offsetWidth,searchBar.offsetWidth,menuLogin.offsetWidth);
+    
     const placeForSearchBar:number = largeurPage - (menu.offsetWidth + menuLogin.offsetWidth);
     if(placeForSearchBar/2 <= 180){
       this.isMobile = true;
@@ -93,6 +97,8 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
     }
    
   }
+
+
   checkScreenSize() {
     this.isMobile = window.innerWidth <= 600;
   }
@@ -126,6 +132,7 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
     }
   }
 
+  //Affiche la barre de recherche en mode mobile et la colle au bouton loupe
   toggleSearchBar(){
 
     const rect = this.searchButton.nativeElement.getBoundingClientRect();
