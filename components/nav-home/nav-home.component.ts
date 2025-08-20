@@ -69,9 +69,11 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
           map(name => name ? this._filter(name) : this.searchItems.slice())
         );
       });
-      this.checkScreenSize();
+      
       window.addEventListener('resize', () => this.checkScreenSize());
       this.calculateWidthSearchBar();
+    }else{
+      this.checkScreenSize();
     }
   }
 
