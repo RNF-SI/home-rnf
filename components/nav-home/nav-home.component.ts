@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { map, Observable, startWith } from 'rxjs';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter, map, Observable, startWith, Subscription } from 'rxjs';
 
 import { AuthService } from '../../services/auth-service.service';
 import { SearchItem, SearchService } from '../../services/search.service';
@@ -25,7 +25,7 @@ import { SearchBarDialogComponent } from '../search-bar-dialog/search-bar-dialog
     styleUrls: ['./nav-home.component.scss'],
     imports:[CommonModule,FontAwesomeModule,RouterModule,MatMenuModule,MatFormFieldModule,ReactiveFormsModule,MatToolbarModule,MatInputModule,MatAutocompleteModule,MatOptionModule,MatIconModule,MatMenuModule]
 })
-export class NavHomeComponent implements OnInit,AfterViewInit {
+export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
 
   private _authService = inject(AuthService);
   private router = inject(Router);
@@ -48,15 +48,35 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
   searchInput = AppConfig.SEARCH_INPUT;
   placeholder = AppConfig.SEARCH_PLACEHOLDER;
   isMobile = false;
-
+  routerSub?:Subscription;
   @ViewChild('searchButton', { read: ElementRef }) searchButton!: ElementRef;
 
 
+  
   ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      this.isHomePage = this.router.url === '/';
-    });
+    // Écoute les changements de route
+    this.routerSub = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.isHomePage = event.urlAfterRedirects === '/';
+      });
 
+    // Définir la valeur au premier chargement
+    this.isHomePage = this.router.url === '/';
+    this.init();
+  }
+
+  ngAfterViewInit(): void {
+  
+    if (this.searchInput && window.innerWidth >= 600){
+      this.calculateWidthSearchBar();
+    }
+    
+  }
+
+  init(){
+ 
+    
     // Récupération des items de recherche depuis le backend,
     // en passant l'URL de l'API définie dans AppConfig.
     if (this.searchInput) {
@@ -69,21 +89,11 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
           map(name => name ? this._filter(name) : this.searchItems.slice())
         );
       });
-      
+      this.checkScreenSize();
       window.addEventListener('resize', () => this.checkScreenSize());
       this.calculateWidthSearchBar();
-    }else{
-      this.checkScreenSize();
     }
   }
-
-  ngAfterViewInit(): void {
-    if (this.searchInput && window.innerWidth >= 600){
-      this.calculateWidthSearchBar();
-    }
-    
-  }
-
   //Calcule la place disponible pour la barre de recherche et passe le menu en mode mobile si place trop petite.
   calculateWidthSearchBar(){
     const largeurPage:number = window.innerWidth;
@@ -156,6 +166,10 @@ export class NavHomeComponent implements OnInit,AfterViewInit {
 
   public get user(): null | User {
     return this._authService.getCurrentUser();
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
   }
 
 }
