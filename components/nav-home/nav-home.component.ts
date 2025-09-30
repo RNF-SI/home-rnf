@@ -40,6 +40,7 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
   menu = AppConfig.menu;
   menucompte = AppConfig.menucompte
   isHomePage: boolean = false;
+  displayFooter = AppConfig.displayFooter;
 
   // Pour l'autocomplete de recherche
   searchControl = new FormControl();
