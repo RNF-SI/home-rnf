@@ -1,0 +1,44 @@
+<div class="center-contact">
+  
+    <form [formGroup]="formGroup" (submit)="recordMail($event)" class="col-center">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nom</mat-label>
+        <input matInput placeholder="Entrez votre nom" formControlName="nom" required />
+        @if (formGroup.get('nom')?.hasError('required')) {
+          <mat-error>Le nom est requis</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Entrez votre adresse email" formControlName="expediteur" required />
+        @if (formGroup.get('expediteur')?.hasError('required')) {
+          <mat-error>Le mail est requis</mat-error>
+        }
+        @if (formGroup.get('expediteur')?.hasError('pattern')) {
+          <mat-error>Le format est incorrect</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Objet</mat-label>
+        <input matInput placeholder="Entrez l'objet de votre message" formControlName="objet" required />
+        @if (formGroup.get('objet')?.hasError('required')) {
+          <mat-error>L'objet est requis</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Message</mat-label>
+        <textarea matInput placeholder="Écrivez votre message" formControlName="message" required></textarea>
+        @if (formGroup.get('message')?.hasError('required')) {
+          <mat-error>Le message est requis</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-raised-button type="submit">Envoyer</button>
+    </form>
+  
+</div>
+  

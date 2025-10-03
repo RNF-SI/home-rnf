@@ -22,7 +22,8 @@
       "ngx-toaster": "^1.0.1",
       "ngx-toastr": "^19.0.0",
       "tslib": "^2.3.0",
-      "zone.js": "~0.15.0"
+      "zone.js": "~0.15.0",
+      "ng-recaptcha-2": "^15.0.3"
     },
     "devDependencies": {
       "@angular-devkit/build-angular": "^19.2.15",
@@ -39,7 +40,7 @@
     },
     "repository": {
     },
-    "author": "Zacharie Moulin et Antoine Schlegel <si@rnfrance.org>",
+    "author": "Thomas Arlès <si@rnfrance.org>",
     "license": "ISC",
     "bugs": {
 

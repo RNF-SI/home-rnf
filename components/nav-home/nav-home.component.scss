@@ -230,3 +230,10 @@ mat-toolbar a {
   display: inline;
   margin-right: 1%;
 }
+
+.grid-6-6{
+  display: grid;
+  grid-row: 1rem;
+  grid-template-columns: 50% 50%;
+  
+}

@@ -18,6 +18,7 @@ import { User } from '../../models/user.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchBarDialogComponent } from '../search-bar-dialog/search-bar-dialog.component';
+import { AlerteContactComponent } from '../alerte-contact/alerte-contact.component';
 
 @Component({
     selector: 'app-nav-home',
@@ -171,6 +172,10 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
 
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
+  }
+
+  sendEmail(){
+    this.dialog.open(AlerteContactComponent, {});
   }
 
 }

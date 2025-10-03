@@ -1,17 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -23,20 +13,11 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { NavHomeComponent } from './components/nav-home/nav-home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InputErrorPipe } from './pipes/input-error.pipe';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2';
+import { AlerteContactComponent } from './components/alerte-contact/alerte-contact.component';
+import { ContactHomeRnfComponent } from './components/contact/contact.home.rnf.component';
 
-@NgModule({imports: [CommonModule,
-        MatMenuModule,
-        MatIconModule,
-        MatToolbarModule,
-        MatDialogModule,
-        MatProgressBarModule,
-        MatFormFieldModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        FontAwesomeModule,
-        MatButtonModule,
-        MatAutocompleteModule,
+@NgModule({imports: [
         LoginComponent,
         LogoutComponent,
         NavHomeComponent,
@@ -45,11 +26,15 @@ import { InputErrorPipe } from './pipes/input-error.pipe';
         ForgotPasswordComponent,
         NotFoundComponent,
         AccessDeniedComponent,
+        RecaptchaV3Module,
+        AlerteContactComponent,
+        ContactHomeRnfComponent
       
       ], providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6LdVGX0rAAAAAEtvEY2NkvUBuhRJ71lQ7ZkwbNX7' }
     ] })
 export class HomeRnfModule {
   constructor(library: FaIconLibrary) {
