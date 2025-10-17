@@ -94,6 +94,8 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
       this.checkScreenSize();
       window.addEventListener('resize', () => this.checkScreenSize());
       this.calculateWidthSearchBar();
+    }else{
+      this.checkScreenSize();
     }
   }
   //Calcule la place disponible pour la barre de recherche et passe le menu en mode mobile si place trop petite.
