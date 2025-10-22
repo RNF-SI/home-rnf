@@ -70,17 +70,25 @@ export class AuthService {
       withCredentials: true
     };
 
-    return this._http.post<any>(`${environment.apiGeoNature}/auth/login`, options, httpOptions).pipe(
-      // Chaîner l'appel à getRnsByUser après la réponse de l'authentification
-      switchMap(response =>
-        this.getRnsByUser(response.user.id_role).pipe(
-          map(res => {
-            this.setCurrentUser(response.user, response.token, response.expires, res.items);
-            // Retourner l'utilisateur pour indiquer que la connexion a réussi
-            return response.user;
-          })
-        )
-      )
+    return this._http.post<any>(
+      `${environment.apiPnUH ? environment.apiPnUH : environment.apiGeoNature}/auth/login`,
+      options,
+      httpOptions
+    ).pipe(
+      switchMap(response => {
+        if (!environment.apiPnUH) {
+          return this.getRnsByUser(response.user.id_role).pipe(
+            map(res => {
+              this.setCurrentUser(response.user, response.token, response.expires, res.items);
+              return response.user; // on renvoie bien un observable d'user
+            })
+          );
+        } else {
+          // si condition non remplie → on renvoie directement un observable du user
+          this.setCurrentUser(response.user, response.token, response.expires, []);
+          return of(response.user);
+        }
+      })
     );
   }
 

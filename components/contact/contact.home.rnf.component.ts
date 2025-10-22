@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
@@ -26,7 +26,7 @@ import { MailService } from '../../services/mail.service';
     ],
     
 })
-export class ContactHomeRnfComponent implements OnDestroy{
+export class ContactHomeRnfComponent implements OnDestroy, OnInit{
   
   private _location = inject(Location);
   fb = inject(FormBuilder);
@@ -45,6 +45,13 @@ export class ContactHomeRnfComponent implements OnDestroy{
   public log: string[] = [];
   public declarativeFormCaptchaValue ?: string;
   private toaster = inject(ToastrService);
+  @Input() pre_rempli:Mail = new Mail();
+
+  ngOnInit(){
+    if (this.pre_rempli.expediteur){
+      this.formGroup.patchValue(this.pre_rempli);
+    }
+  }
 
   recordMail(event : Event){
     event.preventDefault();

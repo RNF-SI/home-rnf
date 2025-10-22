@@ -26,7 +26,6 @@ export class Mail{
             const mail = new Mail();
     
             mail.destinataire = data.destinataire;
-            mail.destinataire = data.destinataire;
             mail.expediteur = data.expediteur;
             mail.nom = data.nom;
             mail.objet = data.objet;
