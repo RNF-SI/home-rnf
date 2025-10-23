@@ -176,6 +176,33 @@ par :
         font-weight: bold !important;
         margin-top: 1%!important;
     }
+#formulaire de contact#
 
-26. lancer l'app
-	  ng serve
+Cette version contient un formulaire de contact qui dépend de l'api : 
+
+26. Copier les fichiers du repertoire api_contact dans votre api et les renommer en enlevant .txt
+
+27. Copier cette ligne dans app.py
+    mail.init_app(app)
+
+28. Renseigner les valeurs de ces constantes dans le fichier config.py
+    MAIL_SERVER = ''
+    MAIL_PORT = 25
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = False
+    MAIL_DEFAULT_SENDER = ""
+    """ Destinataire du formulaire """
+    MAIL_RECEIVER = ""
+    MAIL_ASCII_ATTACHMENTS = False
+    MAIL_USERNAME = ""
+    RECAPTCHA_SECRET_KEY = ""  
+
+#paramétrage barre des partenaires#
+29. Si les logos des partenaires doivent apparaître dans le footer, vous pouvez paramétrer l'application pour qu'ils s'affichent. Copier toutes les images des partenaires dans un répertoire partenaires situé dans assets/images
+
+30. Copier également le fichier fichiers.json du répertoire partenaires de home-rnf dans le répertoire créé précédemment.
+
+31. Modifier le fichier fichiers.json en y ajoutant tous les noms des images des partenaires comme dans cet exemple :
+  ["partenaire_a.jpg","partenaires_b.jpg"]
+
+
