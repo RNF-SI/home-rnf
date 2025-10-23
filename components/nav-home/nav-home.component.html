@@ -124,6 +124,17 @@
       
       <!-- Grid row -->
     </div>
+    @if(displayPartners){
+      <div class="partenaires">
+        <p>Ce projet a été soutenu par : 
+          @for(part of partenaires;track part){
+            <img class ="partenaire" src="assets/images/partenaires/{{part}}"/>
+          }
+          
+        </p>
+      </div>
+    }
+    
   </section>
   <!-- Section: Links  -->
 </footer>

@@ -19,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchBarDialogComponent } from '../search-bar-dialog/search-bar-dialog.component';
 import { AlerteContactComponent } from '../alerte-contact/alerte-contact.component';
+import { JsonService } from '../../services/json.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-nav-home',
@@ -53,8 +55,11 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
   routerSub?:Subscription;
   @ViewChild('searchButton', { read: ElementRef }) searchButton!: ElementRef;
 
+  partenaires:string[] = [];
+  partSub?:Subscription;
+  jsonService = inject(JsonService);
+  displayPartners = environment.displayPartners;
 
-  
   ngOnInit(): void {
     // Écoute les changements de route
     this.routerSub = this.router.events
@@ -66,6 +71,11 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
     // Définir la valeur au premier chargement
     this.isHomePage = this.router.url === '/';
     this.init();
+
+    this.partSub = this.jsonService.getPartenairesJson().subscribe(partenaires =>{
+      this.partenaires = partenaires;
+     
+    })
   }
 
   ngAfterViewInit(): void {
