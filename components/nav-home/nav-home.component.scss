@@ -68,6 +68,13 @@
   color: white;
 }
 
+.grid-4-4-4{
+  display: grid;
+  grid-row: 1rem;
+  grid-template-columns: 33% 33% 33%;
+  
+}
+
 @media screen and (max-width: 600px) and (min-width:470px){
   .title, .title-home {
     font-size: 30px;
@@ -98,6 +105,12 @@
     width: 50% !important;
   }
 
+  .grid-4-4-4{
+    display: block;
+   
+    
+  }
+
 }
 
 @media (max-width: 470px) {
@@ -118,6 +131,12 @@
     margin-inline: 5vw;
     color: black;
   }
+
+  .grid-4-4-4{
+    display: block;
+   
+    
+  }
 }
 
 .white-icon {
@@ -131,8 +150,9 @@
   color: white;
 }
 
-.contact a {
+.contact div {
   color: white;
+  cursor:pointer;
 }
 
 .text-center {
@@ -231,19 +251,15 @@ mat-toolbar a {
   margin-right: 1%;
 }
 
-.grid-6-6{
-  display: grid;
-  grid-row: 1rem;
-  grid-template-columns: 50% 50%;
-  
-}
 
 .partenaire{
   display: inline;
-  width:5%;
+  height:80px;
   margin-left: 2%;
 }
 
 .partenaires{
-  margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
