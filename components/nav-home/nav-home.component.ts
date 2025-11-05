@@ -58,7 +58,7 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
   partenaires:string[] = [];
   partSub?:Subscription;
   jsonService = inject(JsonService);
-  displayPartners = environment.displayPartners;
+  displayPartners =  AppConfig.displayPartners;
 
   ngOnInit(): void {
     // Écoute les changements de route

@@ -198,11 +198,13 @@ Cette version contient un formulaire de contact qui dépend de l'api :
     RECAPTCHA_SECRET_KEY = ""  
 
 #paramétrage barre des partenaires#
-29. Si les logos des partenaires doivent apparaître dans le footer, vous pouvez paramétrer l'application pour qu'ils s'affichent. Copier toutes les images des partenaires dans un répertoire partenaires situé dans assets/images
+29. Si les logos des partenaires doivent apparaître dans le footer, vous pouvez paramétrer l'application pour qu'ils s'affichent. Ajouter une constante "displayPartners":true dans le fichier appconfig.ts situé dans conf/
 
-30. Copier également le fichier fichiers.json du répertoire partenaires de home-rnf dans le répertoire créé précédemment.
+30. Copier toutes les images des partenaires dans un répertoire partenaires situé dans assets/images
 
-31. Modifier le fichier fichiers.json en y ajoutant tous les noms des images des partenaires comme dans cet exemple :
+31. Copier également le fichier fichiers.json du répertoire partenaires de home-rnf dans le répertoire créé précédemment.
+
+32. Modifier le fichier fichiers.json en y ajoutant tous les noms des images des partenaires comme dans cet exemple :
   ["partenaire_a.jpg","partenaires_b.jpg"]
 
 
