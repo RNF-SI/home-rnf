@@ -71,7 +71,7 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
     // Définir la valeur au premier chargement
     this.isHomePage = this.router.url === '/';
     this.init();
-
+    
     this.partSub = this.jsonService.getPartenairesJson().subscribe(partenaires =>{
       this.partenaires = partenaires;
      
@@ -83,7 +83,10 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
     if (this.searchInput && window.innerWidth >= 600){
       this.calculateWidthSearchBar();
     }
-    
+    if(!AppConfig.displayPartners){
+      let elem = document.querySelector('.nav-grid-4-4-4') as HTMLElement;
+      elem.style.gridTemplateColumns = "50% 0% 50%";
+    }
   }
 
   init(){

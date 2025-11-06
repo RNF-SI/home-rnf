@@ -1,5 +1,10 @@
 @use 'src/styles/custom-theme.scss' as custom;
 
+h6{
+  font-size: 16px;
+  margin-top:3%;
+  font-weight:600;
+}
 .example-spacer {
   flex: 1 1 auto;
 }
@@ -68,14 +73,22 @@
   color: white;
 }
 
-.grid-4-4-4{
+.nav-grid-4-4-4{
   display: grid;
   grid-row: 1rem;
   grid-template-columns: 33% 33% 33%;
-  
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
-@media screen and (max-width: 600px) and (min-width:470px){
+@media screen and (max-width: 1100px) and (min-width:660px){
+  .nav-grid-4-4-4{
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+
+@media screen and (max-width: 660px) and (min-width:470px){
   .title, .title-home {
     font-size: 30px;
     padding-left: 20px;
@@ -105,9 +118,9 @@
     width: 50% !important;
   }
 
-  .grid-4-4-4{
+  .nav-grid-4-4-4{
     display: block;
-   
+  
     
   }
 
@@ -248,7 +261,7 @@ mat-toolbar a {
 
 .social div{
   display: inline;
-  margin-right: 1%;
+  margin: 3%;
 }
 
 
@@ -262,4 +275,8 @@ mat-toolbar a {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.partenaires img{
+  display: inline-block;
 }

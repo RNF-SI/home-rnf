@@ -73,17 +73,17 @@
 </div>
 
 <!-- Footer -->
-<footer class="text-center text-lg-start text-muted" *ngIf="displayFooter">
+<footer class="text-center" *ngIf="displayFooter">
   <!-- Section: Links  -->
   <section class="panel-footer ">
-    <div class="grid-4-4-4">
+    <div class="nav-grid-4-4-4">
       <!-- Grid row -->
       
         <!-- Grid column -->
-        <div class="col-md-5 col-lg-5 col-xl-4 mx-auto mb-4">
+        <div>
           <!-- Content -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            <i class="fas fa-gem me-3 text-secondary"></i>Réserves Naturelles de France
+          <h6>
+            <!-- <i class="fas fa-gem me-3 text-secondary"></i> -->Réserves Naturelles de France
           </h6>
           <p>
             2 allée Pierre Lacroute <br>
@@ -96,32 +96,33 @@
 
         @if(displayPartners){
           <div class="partenaires">
-            <p>Ce projet a été soutenu par : 
+            <div>Ce projet a été soutenu par : 
+              <p>
               @for(part of partenaires;track part){
-                <p><img class ="partenaire" src="assets/images/partenaires/{{part}}"/></p>
+                <img class ="partenaire" src="assets/images/partenaires/{{part}}"/>
               }
-              
-            </p>
+              </p>
+            </div>
           </div>
         }@else{
           <div></div>
         }
         <!-- Grid column -->
-        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <div>
           <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">Réseaux Sociaux</h6>
-          <div class="d-flex justify-content-between social">
-            <div><a href="https://www.facebook.com/rn.de.france" class="me-4 link-secondary" target="_blank">
+          <h6>Réseaux Sociaux</h6>
+          <div class="social">
+            <div><a href="https://www.facebook.com/rn.de.france" target="_blank">
                 <fa-icon [icon]="['fab', 'facebook']" size="3x" class="white-icon"></fa-icon>
               </a></div>
-            <div><a href="https://www.instagram.com/reserves_naturelles_de_france/" class="me-4 link-secondary"
+            <div><a href="https://www.instagram.com/reserves_naturelles_de_france/"
                 target="_blank">
                 <fa-icon [icon]="['fab', 'instagram']" size="3x" class="white-icon"></fa-icon>
               </a></div>
-            <div><a href="https://www.linkedin.com/company/50041043" class="me-4 link-secondary" target="_blank">
+            <div><a href="https://www.linkedin.com/company/50041043" target="_blank">
                 <fa-icon [icon]="['fab', 'linkedin']" size="3x" class="white-icon"></fa-icon>
               </a> </div>
-            <div><a href="https://github.com/RNF-SI" class="me-4 link-secondary" target="_blank">
+            <div><a href="https://github.com/RNF-SI" target="_blank">
                 <fa-icon [icon]="['fab', 'github']" size="3x" class="white-icon"></fa-icon>
               </a></div>
           </div>

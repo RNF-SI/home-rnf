@@ -10,7 +10,7 @@ import { Mail } from '../models/mail.model';
 })
 export class MailService {
 
-  private BASE_URL = environment.apiUrl+'contact-home-rnf';
+  private BASE_URL = environment.flask_server+'contact-home-rnf';
   private http = inject(HttpClient);
 
   //Récupère les mails en fonction des sites
