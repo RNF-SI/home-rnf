@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -28,7 +28,7 @@ export interface LoginData {
     standalone:true,
     imports:[CommonModule,ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatIconModule,MatProgressBarModule,FontAwesomeModule,InputErrorPipe]
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   enable_sign_up: boolean = false;
   enable_user_management: boolean = false;
   public disableSubmit = false;
@@ -42,6 +42,7 @@ export class LoginComponent {
   public APP_NAME = AppConfig.appName;
   public showPassword = false;
   public progress = false;
+  private errorTimeout?: number;
 
   login_or_pass_recovery: boolean = false;
 
@@ -95,7 +96,18 @@ export class LoginComponent {
   private showError(error: HttpErrorResponse) {
     this.progress = false;
     this.errorCode = error.error['type'];
+    // Nettoyer le timeout précédent s'il existe
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
+    }
     // Réinitialise le message d'erreur après 10 secondes
-    setTimeout(() => this.errorCode = null, 10000);
+    this.errorTimeout = window.setTimeout(() => this.errorCode = null, 10000);
+  }
+
+  ngOnDestroy(): void {
+    // Nettoyer le timeout s'il existe
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
+    }
   }
 }

@@ -57,8 +57,10 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
 
   partenaires:string[] = [];
   partSub?:Subscription;
+  searchSub?:Subscription;
   jsonService = inject(JsonService);
   displayPartners =  AppConfig.displayPartners;
+  private resizeHandler?: () => void;
 
   ngOnInit(): void {
     // Écoute les changements de route
@@ -95,7 +97,7 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
     // Récupération des items de recherche depuis le backend,
     // en passant l'URL de l'API définie dans AppConfig.
     if (this.searchInput) {
-      this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
+      this.searchSub = this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
         this.searchItems = items;
         // Initialisation de l'autocomplete dès que la liste est disponible
         this.filteredSearchItems = this.searchControl.valueChanges.pipe(
@@ -105,7 +107,9 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
         );
       });
       this.checkScreenSize();
-      window.addEventListener('resize', () => this.checkScreenSize());
+      // Stocker la référence à la fonction pour pouvoir la supprimer
+      this.resizeHandler = () => this.checkScreenSize();
+      window.addEventListener('resize', this.resizeHandler);
       this.calculateWidthSearchBar();
     }else{
       this.checkScreenSize();
@@ -187,6 +191,12 @@ export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
 
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
+    this.partSub?.unsubscribe();
+    this.searchSub?.unsubscribe();
+    // Supprimer l'event listener de resize
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
   }
 
   sendEmail(){

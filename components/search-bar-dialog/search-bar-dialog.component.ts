@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppConfig } from 'src/conf/app.config';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search-bar-dialog',
@@ -21,7 +22,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './search-bar-dialog.component.scss',
   standalone:true
 })
-export class SearchBarDialogComponent implements OnInit{
+export class SearchBarDialogComponent implements OnInit, OnDestroy{
   constructor(
     public dialogRef: MatDialogRef<SearchBarDialogComponent>,
    
@@ -31,11 +32,12 @@ export class SearchBarDialogComponent implements OnInit{
   searchControl = new FormControl();
   searchItems: SearchItem[] = []; // Items récupérés depuis le backend
   filteredSearchItems!: Observable<SearchItem[]>;
+  private searchSub?: Subscription;
 
   placeholder = AppConfig.SEARCH_PLACEHOLDER;
 
   ngOnInit(): void {
-    this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
+    this.searchSub = this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
       this.searchItems = items;
       // Initialisation de l'autocomplete dès que la liste est disponible
       this.filteredSearchItems = this.searchControl.valueChanges.pipe(
@@ -74,5 +76,9 @@ export class SearchBarDialogComponent implements OnInit{
         this.searchControl.setValue('');
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.searchSub?.unsubscribe();
   }
 }
