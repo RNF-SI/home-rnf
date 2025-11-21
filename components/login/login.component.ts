@@ -45,6 +45,7 @@ export class LoginComponent implements OnDestroy {
   private errorTimeout?: number;
 
   login_or_pass_recovery: boolean = false;
+  messageError: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: LoginData,
@@ -79,6 +80,7 @@ export class LoginComponent implements OnDestroy {
         },
         error: (error: HttpErrorResponse) => {
           this.showError(error);
+          console.log(error);
         }
       });
   }

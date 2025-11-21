@@ -41,6 +41,7 @@
         Se connecter
       </button>
       <br>
+      <p>{{messageError}}</p>   
       <br>
       <div class="forgot" (click)="clikonforgot()">
         Mot de passe oublié
@@ -52,35 +53,7 @@
       <mat-progress-bar *ngIf="progress" mode="indeterminate" color="accent"></mat-progress-bar>
     </form>
   </ng-container>
-  <!-- <ng-template #logPwdRecoBlock>
-    <ng-container *ngIf="login_or_pass_recovery">
-      <div>
-        <small>Veuillez renseigner votre adresse email utilisée lors de votre
-          inscription.
-        </small>
-        <br />
-        <small>Un message y sera envoyé avec votre identifiant et la possibilité de
-          renouveler
-          votre votre mot de passe.</small>
-      <br>
-      <br>
-      </div>
-      <form [formGroup]="formNoPwd" fxLayout="column" fxLayoutAlign="space-around stretch" fxLayoutGap="10px"
-      (ngSubmit)="resetPwdRequest()">
-      <mat-form-field class="form-field" appearance="fill">
-        <mat-label>Adresse email</mat-label>
-        <input matInput formControlName="email"
-        class="form-input-field">
-      </mat-form-field>
-      <mat-error *ngIf="formNoPwd.get('email')!.hasError('email')"
-        >Entrer une adresse email valide
-      </mat-error>
-      <button mat-stroked-button color="primary" type="submit" [disabled]="!formNoPwd.valid" class="btn">
-        Envoyer
-      </button>
-      </form>
-    </ng-container>
-  </ng-template> -->
+
 </div>
 
 <!-- create form for login -->
