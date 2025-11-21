@@ -76,10 +76,12 @@ export class LoginComponent implements OnDestroy {
       .subscribe({
         next: (user) => {
           // Connexion réussie : fermer le dialogue en renvoyant l'utilisateur
+          console.log(user);
           if(user.max_level_profil > 0){
             this.ref.close(user);
           }else{
             this.progress = false;
+            this._authService.logout();
             this.errorCode = 'INSUFFICIENT_PERMISSIONS';
             this.messageError = 'Problème avec la connexion';
             this._toasterService.error(this.messageError, 'Accès refusé');
