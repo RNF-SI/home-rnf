@@ -13,7 +13,7 @@
   <!-- Liens du menu -->
   <div *ngFor="let e of menu">
     <a [routerLink]="e.lien">
-      <fa-icon [icon]="[e.classFa, e.nomFa]"></fa-icon> {{ e.nom | uppercase }}
+      <fa-icon [icon]="$any([e.classFa, e.nomFa])"></fa-icon> {{ e.nom | uppercase }}
     </a>
   </div>
 
@@ -44,7 +44,7 @@
   <mat-menu #menuSettings="matMenu">
     <div *ngFor="let i of menucompte">
       <button mat-menu-item [routerLink]="[i.lien]">
-        <fa-icon [icon]="[i.classFa, i.nomFa]"></fa-icon> {{ i.texte }}
+        <fa-icon [icon]="$any([i.classFa, i.nomFa])"></fa-icon> {{ i.texte }}
       </button>
     </div>
   </mat-menu>

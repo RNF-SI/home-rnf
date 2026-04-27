@@ -12,12 +12,12 @@ import { RedirectService } from '../../services/redirect.service';
 })
 export class ForgotPasswordComponent {
 
-  formNoPwd: UntypedFormGroup;
+  formNoPwd : UntypedFormGroup;
   private email: UntypedFormControl;
   public disableSubmit = false;
+  
 
-
-  constructor(
+  constructor (
     public _authService: AuthService,
     private redirect: RedirectService,
     private _toasterService: ToastrService,
@@ -30,19 +30,12 @@ export class ForgotPasswordComponent {
     this.formNoPwd.addControl('email', this.email)
   }
   resetPwdRequest() {
-    // this.disableSubmit = true;
-    this.formNoPwd.value['email'] = this.formNoPwd.value['email'].toLowerCase();
-
-    this._authService.loginOrPwdRecovery(this.formNoPwd.value)
-      .subscribe(() => {
-        this._toasterService.info('Vous recevrez un mail avec un lien pour réinitialiser votre mot de passe.', 'Réinitialisation du mot de passe demandée !')
-        this.router.navigate(['/']);
-      }, error => {
-        this._toasterService.error(error.error.msg, '')
-      })
-      .add(() => {
-        this.disableSubmit = false;
-      })
-
+    this._authService.loginOrPwdRecovery(this.formNoPwd.value).subscribe(() => {
+      this._toasterService.info(
+        'Utilisez la page Keycloak qui s’ouvre pour réinitialiser votre mot de passe.',
+        'Réinitialisation'
+      );
+      this.router.navigate(['/']);
+    });
   }
 }

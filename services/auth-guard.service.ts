@@ -1,45 +1,22 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { LoginComponent } from '../components/login/login.component';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './auth-service.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthGuardService implements CanActivate {
+export class AuthGuardService {
+  constructor(private authService: AuthService) {}
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private dialog: MatDialog
-  ) { }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.authService.authenticated) {
-      // Si l'utilisateur est déjà authentifié, on retourne true directement.
-      return of(true);
+      return true;
     }
-
-    // Sinon, on ouvre le dialogue de login
-    const dialogRef = this.dialog.open(LoginComponent, {
-      data: { returnUrl: state.url },
-      disableClose: true // Pour forcer l'utilisateur à se connecter
-    });
-
-    // Le guard renvoie un Observable qui attend que le dialogue se ferme.
-    return dialogRef.afterClosed().pipe(
-      map(result => {
-        if (result) {
-          // Si le dialogue retourne un résultat (login réussi), on retourne true.
-          return true;
-        } else {
-          // Sinon, on retourne false (accès refusé).
-          return false;
-        }
-      })
-    );
+    this.authService.beginKeycloakLogin(state.url);
+    return false;
   }
 }
+
+export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+  return inject(AuthGuardService).canActivate(next, state);
+};

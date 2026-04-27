@@ -1,29 +1,20 @@
-import { inject, Inject, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivateFn } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { LoginComponent } from '../components/login/login.component'; 
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateFn } from '@angular/router';
+import { AuthService } from './auth-service.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LazyDialogLoader {
-  constructor(private dialog: MatDialog) {}
+  constructor(private auth: AuthService) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-      
-    this.dialog.open(LoginComponent, {
-      data: { url: state.url }  // Pass the URL as data
-    });
-
-    // Always return false so the route is never activated.
-    // You might want to modify this to return true if the user is already authenticated.
+  canActivate(_next: ActivatedRouteSnapshot, _state: RouterStateSnapshot): boolean {
+    // Ne pas passer state.url (/login) : sinon post_login_redirect relance ce garde en boucle après OIDC.
+    this.auth.beginKeycloakLogin();
     return false;
   }
-
 }
 
-export const LazyDialog: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+export const LazyDialog: CanActivateFn = (next, state) => {
   return inject(LazyDialogLoader).canActivate(next, state);
-}
+};
