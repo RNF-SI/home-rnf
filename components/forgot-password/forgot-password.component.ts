@@ -13,7 +13,8 @@ import { MatInputModule } from '@angular/material/input';
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss'],
-    imports:[CommonModule,ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatFormFieldModule,MatButtonModule]
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
 export class ForgotPasswordComponent {
 

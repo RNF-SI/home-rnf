@@ -26,7 +26,8 @@ import { environment } from 'src/environments/environment';
     selector: 'app-nav-home',
     templateUrl: './nav-home.component.html',
     styleUrls: ['./nav-home.component.scss'],
-    imports:[CommonModule,FontAwesomeModule,RouterModule,MatMenuModule,MatFormFieldModule,ReactiveFormsModule,MatToolbarModule,MatInputModule,MatAutocompleteModule,MatOptionModule,MatIconModule,MatMenuModule]
+    standalone: true,
+    imports: [CommonModule, FontAwesomeModule, RouterModule, MatMenuModule, MatFormFieldModule, ReactiveFormsModule, MatToolbarModule, MatInputModule, MatAutocompleteModule, MatOptionModule, MatIconModule],
 })
 export class NavHomeComponent implements OnInit,AfterViewInit,OnDestroy {
 

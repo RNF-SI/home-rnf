@@ -14,7 +14,8 @@ import { MailService } from '../../services/mail.service';
     selector: 'app-contact-home-rnf',
     templateUrl: './contact.home.rnf.component.html',
     styleUrls: ['./contact.home.rnf.component.css'],
-    imports:[
+    standalone: true,
+    imports: [
       ReactiveFormsModule,
       MatFormFieldModule,
       MatButtonModule,

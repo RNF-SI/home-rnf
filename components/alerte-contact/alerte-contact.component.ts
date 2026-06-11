@@ -6,9 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-alerte-contact',
-  imports: [ContactHomeRnfComponent,MatDialogModule,MatButtonModule],
+  standalone: true,
+  imports: [ContactHomeRnfComponent, MatDialogModule, MatButtonModule],
   templateUrl: './alerte-contact.component.html',
-  styleUrl: './alerte-contact.component.scss'
+  styleUrl: './alerte-contact.component.scss',
 })
 export class AlerteContactComponent {
   constructor(
