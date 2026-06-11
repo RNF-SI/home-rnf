@@ -1,5 +1,26 @@
 @use 'src/styles/custom-theme.scss' as custom;
 
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content > div {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
 h6{
   font-size: 16px;
   margin-top:3%;
