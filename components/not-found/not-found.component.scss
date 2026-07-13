@@ -1,7 +1,5 @@
-@import 'src/styles/custom-theme';
-
 div {
-    text-align: center;
-    font-weight: bold;
-    color: mat-color(map-get($custom-theme, primary), 500);
+  text-align: center;
+  font-weight: bold;
+  color: var(--custom-primary-500);
 }

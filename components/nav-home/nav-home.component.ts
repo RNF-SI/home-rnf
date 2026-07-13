@@ -42,7 +42,7 @@ export class NavHomeComponent implements OnInit, OnDestroy {
   searchItems: SearchItem[] = [];
   filteredSearchItems!: Observable<SearchItem[]>;
   searchInput = (AppConfig as { SEARCH_INPUT?: boolean }).SEARCH_INPUT;
-  placeholder = (AppConfig as { SEARCH_PLACEHOLDER?: string }).SEARCH_PLACEHOLDER;
+  placeholder = (AppConfig as { SEARCH_PLACEHOLDER?: string }).SEARCH_PLACEHOLDER ?? '';
 
   private readonly destroy$ = new Subject<void>();
 
