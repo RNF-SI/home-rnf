@@ -1,52 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, startWith, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/home-rnf/models/user.model';
-import { AppConfig } from 'src/conf/app.config';
+import { AdminGuardService } from '../../services/admin-guard.service';
 import { AuthService } from '../../services/auth-service.service';
+import { NotificationBadgeService } from 'src/app/home-rnf/services/notification-badge.service';
 import { SearchItem, SearchService } from '../../services/search.service';
+import { AppConfig, NavMenuItem } from 'src/conf/app.config';
+import { MeResponse } from 'src/app/services/api.service';
 
 @Component({
+  standalone: false,
   selector: 'app-nav-home',
   templateUrl: './nav-home.component.html',
   styleUrls: ['./nav-home.component.scss']
 })
-export class NavHomeComponent implements OnInit {
+export class NavHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     public _authService: AuthService,
     private router: Router,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private notificationBadge: NotificationBadgeService,
+    private adminGuard: AdminGuardService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
-  // Paramètres provenant d'AppConfig pour la navbar
   title = AppConfig.appTitle;
   subtitle = AppConfig.appSubTitle;
   credit = AppConfig.creditHeaderImage;
-  menu = AppConfig.menu;
-  menucompte = AppConfig.menucompte
-  isHomePage: boolean = false;
-  displayFooter = AppConfig.displayFooter;
+  menucompte = AppConfig.menucompte;
+  unreadCount = 0;
+  showNotifications = AppConfig.features?.notifications !== false;
+  menuItems: NavMenuItem[] = AppConfig.menu;
+  isHomePage = false;
+  displayFooter = (AppConfig as { displayFooter?: boolean }).displayFooter ?? true;
 
-  // Pour l'autocomplete de recherche
   searchControl = new FormControl();
-  searchItems: SearchItem[] = []; // Items récupérés depuis le backend
+  searchItems: SearchItem[] = [];
   filteredSearchItems!: Observable<SearchItem[]>;
-  searchInput = AppConfig.SEARCH_INPUT;
-  placeholder = AppConfig.SEARCH_PLACEHOLDER;
+  searchInput = (AppConfig as { SEARCH_INPUT?: boolean }).SEARCH_INPUT;
+  placeholder = (AppConfig as { SEARCH_PLACEHOLDER?: string }).SEARCH_PLACEHOLDER;
+
+  private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      this.isHomePage = this.router.url === '/';
-    });
+    this.router.events
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.isHomePage = this.router.url === '/';
+      });
 
-    // Récupération des items de recherche depuis le backend,
-    // en passant l'URL de l'API définie dans AppConfig.
     if (this.searchInput) {
-      this.searchService.getSearchItems(AppConfig.SEARCH_ITEMS_ROUTE).subscribe((items: SearchItem[]) => {
+      this.searchService.getSearchItems((AppConfig as { SEARCH_ITEMS_ROUTE?: string }).SEARCH_ITEMS_ROUTE || '').subscribe((items: SearchItem[]) => {
         this.searchItems = items;
-        // Initialisation de l'autocomplete dès que la liste est disponible
         this.filteredSearchItems = this.searchControl.valueChanges.pipe(
           startWith(''),
           map(value => typeof value === 'string' ? value : value?.name),
@@ -54,9 +63,42 @@ export class NavHomeComponent implements OnInit {
         );
       });
     }
+
+    this.notificationBadge.getUnreadCount$()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((count) => {
+        this.unreadCount = count;
+        this.cdr.markForCheck();
+      });
+    this._authService.restoreSession().subscribe(() => this.onSessionReady());
   }
 
-  // Filtrage des items en fonction de la saisie utilisateur (non sensible à la casse)
+  private onSessionReady(): void {
+    if (!this.signedIn) {
+      this.notificationBadge.stopPolling();
+      this.notificationBadge.setUnreadCount(0);
+      this.menuItems = this.filterMenuItems(null);
+      this.cdr.markForCheck();
+      return;
+    }
+    const finish = () => {
+      this.notificationBadge.refreshUnreadCount();
+      this.notificationBadge.startPolling();
+      this.refreshMenuItems();
+      this.cdr.markForCheck();
+    };
+    if (this._authService.getCurrentUser()) {
+      finish();
+    } else {
+      this._authService.refreshMeFromApi().subscribe({ next: finish, error: finish });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private _filter(name: string): SearchItem[] {
     const filterValue = this.removeAccents(name.toLowerCase());
     return this.searchItems.filter(item =>
@@ -68,19 +110,15 @@ export class NavHomeComponent implements OnInit {
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
-  // Fonction pour afficher le nom de l'item sélectionné dans l'input
   displayFn(item: SearchItem): string {
     return item && item.nom ? item.nom : '';
   }
 
-  // Lorsqu'un item est sélectionné dans l'autocomplete, naviguer vers la route associée
-  onSearchItemSelected(event: any): void {
+  onSearchItemSelected(event: { option: { value: SearchItem } }): void {
     const item: SearchItem = event.option.value;
     if (item && item.slug) {
-
-      // Force la navigation en passant par une URL temporaire
       this.router.navigateByUrl('/dummy', { skipLocationChange: true }).then(() => {
-        this.router.navigate([AppConfig.SEARCH_PREFIXE, item.slug]);
+        this.router.navigate([(AppConfig as { SEARCH_PREFIXE?: string }).SEARCH_PREFIXE, item.slug]);
         this.searchControl.setValue('');
       });
     }
@@ -92,6 +130,34 @@ export class NavHomeComponent implements OnInit {
 
   public get user(): null | User {
     return this._authService.getCurrentUser();
+  }
+
+  private refreshMenuItems(): void {
+    this.menuItems = this.filterMenuItems(this._authService.getMeSnapshot());
+    this._authService.refreshMeFromApi().subscribe({
+      next: (me) => {
+        this.menuItems = this.filterMenuItems(me);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.menuItems = this.filterMenuItems(this._authService.getMeSnapshot());
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  private filterMenuItems(me: MeResponse | null): NavMenuItem[] {
+    const adminLink = AppConfig.security?.adminMenuLink || 'admin';
+    const hideAdminMenu = AppConfig.security?.hideAdminMenuForNonAdmins !== false;
+    return AppConfig.menu.filter((item) => {
+      if (!hideAdminMenu || item.lien !== adminLink) {
+        return true;
+      }
+      if (!this.signedIn) {
+        return false;
+      }
+      return this.adminGuard.canAccessAdmin(me);
+    });
   }
 
 }

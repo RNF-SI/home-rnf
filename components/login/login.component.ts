@@ -13,6 +13,7 @@ export interface LoginData {
 }
 
 @Component({
+  standalone: false,
   selector: 'pnx-login',
   templateUrl: 'login.component.html',
   styleUrls: ['./login.component.scss']

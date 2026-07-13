@@ -91,6 +91,35 @@ mat-toolbar a {
   text-decoration: none;
 }
 
+.user-menu-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.notification-pin {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #dc3545;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
 .credit {
   position: absolute;
   bottom: 10px;

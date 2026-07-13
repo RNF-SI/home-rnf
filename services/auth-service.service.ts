@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ApiService, KeycloakPublicConfig, MeResponse } from 'src/app/services/api.service';
 
@@ -23,6 +23,7 @@ export class AuthService {
   public isLoading = false;
 
   private kcResolved: KeycloakPublicConfig | null = null;
+  private restoreInFlight: Observable<boolean> | null = null;
 
   constructor(private api: ApiService) {}
 
@@ -232,6 +233,56 @@ export class AuthService {
     return this.refreshAccessToken();
   }
 
+  /** Restaure la session locale (refresh silencieux + profil) après un rechargement de page. */
+  restoreSession(): Observable<boolean> {
+    if (!this.restoreInFlight) {
+      this.restoreInFlight = this.doRestoreSession().pipe(
+        shareReplay(1),
+        finalize(() => {
+          this.restoreInFlight = null;
+        })
+      );
+    }
+    return this.restoreInFlight;
+  }
+
+  private doRestoreSession(): Observable<boolean> {
+    const hasAccess = !!localStorage.getItem(LS_ACCESS);
+    const hasRefresh = !!localStorage.getItem(LS_REFRESH);
+    if (!hasAccess && !hasRefresh) {
+      return of(false);
+    }
+
+    this.syncUserFromSnapshot();
+
+    if (!this.isAccessTokenExpired()) {
+      return of(true);
+    }
+
+    if (!this.hasRefreshTokenValid()) {
+      this.cleanLocalStorage();
+      return of(false);
+    }
+
+    return this.refreshAccessToken().pipe(
+      tap((ok) => {
+        if (ok) {
+          this.syncUserFromSnapshot();
+        }
+      })
+    );
+  }
+
+  private syncUserFromSnapshot(): void {
+    if (localStorage.getItem(LS_CURRENT_USER)) {
+      return;
+    }
+    const me = this.getMeSnapshot();
+    if (me) {
+      localStorage.setItem(LS_CURRENT_USER, JSON.stringify(this.mapMeToUser(me)));
+    }
+  }
+
   refreshMeFromApi(): Observable<MeResponse> {
     return this.api.getMe().pipe(
       tap((me) => {
@@ -269,6 +320,15 @@ export class AuthService {
     }
   }
 
+  updateMeSnapshotUnreadCount(count: number): void {
+    const me = this.getMeSnapshot();
+    if (!me) {
+      return;
+    }
+    me.unread_notifications = Math.max(0, Number(count) || 0);
+    localStorage.setItem(LS_ME, JSON.stringify(me));
+  }
+
   setCurrentUser(user: any, token: any, expireDate: any) {
     localStorage.setItem(LS_CURRENT_USER, JSON.stringify(user));
     localStorage.setItem(LS_ID, token);
@@ -280,11 +340,25 @@ export class AuthService {
     if (currentUser) {
       return JSON.parse(currentUser);
     }
+    const me = this.getMeSnapshot();
+    if (me) {
+      const u = this.mapMeToUser(me);
+      localStorage.setItem(LS_CURRENT_USER, JSON.stringify(u));
+      return u;
+    }
     return null;
   }
 
   public get authenticated(): boolean {
-    return this.getCurrentUser() != null && !this.isAccessTokenExpired();
+    const hasAccess = !!localStorage.getItem(LS_ACCESS);
+    const hasRefresh = !!localStorage.getItem(LS_REFRESH);
+    if (!hasAccess && !hasRefresh) {
+      return false;
+    }
+    if (this.hasRefreshTokenValid()) {
+      return true;
+    }
+    return !this.isAccessTokenExpired();
   }
 
   signinUser(_identifiant: string, _password: string): Observable<any> {
